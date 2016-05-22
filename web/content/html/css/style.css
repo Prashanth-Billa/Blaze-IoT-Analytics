@@ -1,0 +1,168 @@
+@font-face {
+    font-family: Quicksand;
+    src: url(../fonts/Quicksand-Regular.otf);
+}
+
+body {
+    padding: 20px;
+    line-height: 1.5;
+    font-size: 14px;
+    font-family: Quicksand;
+    background: #2F0B3A;
+    color: white;
+}
+
+h1{
+    font-family: Quicksand;
+}
+
+.tabs-menu {
+    height: 30px;
+    float: left;
+    clear: both;
+}
+
+.tabs-menu li {
+    height: 30px;
+    line-height: 30px;
+    float: left;
+    margin-right: 10px;
+    background-color: #ccc;
+    border-top: 1px solid #d4d4d1;
+    border-right: 1px solid #d4d4d1;
+    border-left: 1px solid #d4d4d1;
+}
+
+.tabs-menu li.current {
+    position: relative;
+    background-color: #fff;
+    border-bottom: 1px solid #fff;
+    z-index: 5;
+}
+
+.tabs-menu li a {
+    padding: 10px;
+    text-transform: uppercase;
+    color: black;
+    text-decoration: none;
+
+}
+
+.tabs-menu .current a {
+    color: #2e7da3;
+}
+
+.tab {
+    border: 1px solid #d4d4d1;
+    background-color: #fff;
+    float: left;
+    margin-bottom: 20px;
+    width: auto;
+}
+
+.tab-content {
+    width: 1600px;
+    padding: 20px;
+    display: none;
+}
+
+#tab-1 {
+    display: block;
+}
+
+
+div { margin: 20px; }
+
+.select-dropdown {
+    background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 96% 0;
+    height: 29px;
+    overflow: hidden;
+    width: 240px;
+}
+
+.select-dropdown select {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    height: 29px;
+    padding: 5px; /* If you add too much padding here, the options won't show in IE */
+    width: 268px;
+}
+
+.select-dropdown.slate {
+    background: url(http://i62.tinypic.com/2e3ybe1.jpg) no-repeat right center;
+    height: 34px;
+    width: 240px;
+}
+
+.select-dropdown.slate select {
+    border: 1px solid #ccc;
+    font-size: 16px;
+    height: 34px;
+    width: 268px;
+}
+
+.rounded {
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+}
+
+.shape-blue-square {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.color-blue { background-color: #3b8ec2; }
+
+.color-blue select    { color: #fff; }
+
+.submit-button {
+    background-color: white;
+    color: black;
+    border: 2px solid #4CAF50;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
+textarea {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    width: 70%;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+
+table {
+    border-collapse: collapse;
+    width: 30%;
+}
+
+#tabs-container{
+    color: black;
+}
+
+pre#json-renderer {
+    border: 1px solid #aaa;
+    padding: 0.5em 1.5em;
+    float: left;
+    margin-left: 0px;
+}

@@ -1,0 +1,24 @@
+[  
+   {  
+      "event":"SCALE_person_fall_detected_Android",
+      "device":[  
+         {  
+            "id":"573f6e89616b43f2694fbd43",
+            "type":"personfall",
+            "version":1.2
+         }
+      ],
+      "location":[  
+         {  
+            "lat":33.6432,
+            "lon":-117.8418
+         }
+      ],
+      "cond_freefall_threshold_val":"preset_freefall_threshold_val,",
+      "cond_impact_threshold_val":"preset_impact_threshold_val",
+      "value":"data",
+      "prio_class":"very high",
+      "prio_value":"3",
+      "misc":null
+   }
+]

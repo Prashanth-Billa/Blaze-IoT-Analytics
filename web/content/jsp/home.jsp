@@ -14,19 +14,15 @@ Welcome <%=session.getAttribute("userid")%>
 %>
 <html >
 <head>
-    <meta charset="UTF-8">
+    <script src="http://code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
     <title>IoT Analytics</title>
     <link rel="stylesheet" type="text/css" href="../html/css/style.css">
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Cantarell" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Cantarell" >
     <script src="../html/js/home.js"></script>
-    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#historyData').DataTable({"pageLength": 5});
-        } );
-    </script>
+
+
 </head>
 <body>
 
@@ -45,6 +41,7 @@ Welcome <%=session.getAttribute("userid")%>
     <div class="tab">
         <div id="tab-1" class="tab-content">
             <form method="post" action="processBasic.jsp">
+                <img src="../html/images/sensors.png" width="80px" style="float: right;"/>
                 <b>Select the IoT Sensor to analyze</b>  <br/>
                 <div  class="select-dropdown color-blue shape-blue-square">
                     <select style="color:black" id="select-sensor" onchange="showSensorActions()">
@@ -57,6 +54,7 @@ Welcome <%=session.getAttribute("userid")%>
                 <br/>
                 <hr/>
                 <br/><br/>
+                <img src="../html/images/task.png" width="80px" style="float: right;"/>
                 <b>Select the task for analysis</b> <br>
                 <div style="color:black" class="select-dropdown color-blue shape-blue-square">
                     <select style="color:black" id="sensor-actions" onclick="checkSensorSelected()">
@@ -72,6 +70,7 @@ Welcome <%=session.getAttribute("userid")%>
         </div>
         <div id="tab-2" class="tab-content">
             <form method="post" action="processAdvanced.jsp" enctype="multipart/form-data">
+                <img src="../html/images/upload.png" width="80px" style="float: right;"/>
                 <b>Upload Custom file:</b><br/><br/><br>
                 <input type="file" name="file" size="50" /><br/><br/>
                 <hr/>
@@ -83,22 +82,28 @@ Welcome <%=session.getAttribute("userid")%>
         </div>
 
         <div id="tab-3" class="tab-content">
-            <b>Tasks Executed by you</b><br/><br/><br>
+            <b>Tasks Executed by you</b><br/><img src="../html/images/tasks.png" width="80px"/><br/><br>
             <%@ page import="java.sql.*" %>
+
             <%
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cs237",
                         "root", "root");
                 Statement st = con.createStatement();
                 ResultSet rs;
-                String uid = session.getAttribute("userid").toString();
-                rs = st.executeQuery("select * from queryHistory where username='" + uid + "' order by submit_time DESC");
-                out.println("<table id='historyData' class='display' cellspacing='0' width='100%'");
-                out.println("<thead><tr><th>Mode</th><th>File name</th><th>Query</th><th>Result</th><th>Submit Time</th></tr></thead><tbody>");
-                while(rs.next()){
-                    out.println("<tr><td>" + rs.getString("mode") + "</td><td>" + rs.getString("filename") + "</td><td>" + rs.getString("query") + "</td><td>" + rs.getString("result") + "</td><td>" + rs.getString("submit_time") + "</td></tr>");
+                if(session.getAttribute("userid") == null || session.getAttribute("userid") == ""){
+
+                }else{
+                    String uid = session.getAttribute("userid").toString();
+                    rs = st.executeQuery("select * from queryHistory where username='" + uid + "' order by submit_time DESC");
+                    out.println("<table id='history' class='display' cellspacing='0' width='100%'>");
+                    out.println("<thead><tr><th>Mode</th><th>File name</th><th>Query</th><th>Result</th><th>Submit Time</th></tr></thead><tbody>");
+                    while(rs.next()){
+                        out.println("<tr><td>" + rs.getString("mode") + "</td><td>" + rs.getString("filename") + "</td><td>" + rs.getString("query") + "</td><td>" + rs.getString("result") + "</td><td>" + rs.getString("submit_time") + "</td></tr>");
+                    }
+                    out.println("</tbody></table>");
                 }
-                out.println("</tbody></table>");
+
             %>
         </div>
     </div>
@@ -107,4 +112,11 @@ Welcome <%=session.getAttribute("userid")%>
 
 
 </body>
+<script>
+    $(document).ready(function() {
+        $('#history').dataTable({
+            pageLength: 5
+        });
+    } );
+</script>
 </html>

@@ -21,6 +21,19 @@ Welcome <%=session.getAttribute("userid")%>
     <link rel="stylesheet" type="text/css" href="../html/css/style.css">
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Cantarell" >
     <script src="../html/js/home.js"></script>
+    <script>
+
+        function validateSensorSelection(){
+            var value = document.forms["sensorActionForm"]["sensorType"].options[document.forms["sensorActionForm"]["sensorType"].selectedIndex].value;
+            console.log(value);
+            if(value == null || value == "" || value == "empty"){
+                alert("Please select a valid sensor type")
+                return false;
+            }
+
+            return true;
+        }
+    </script>
 
 
 </head>
@@ -40,11 +53,11 @@ Welcome <%=session.getAttribute("userid")%>
     </ul>
     <div class="tab">
         <div id="tab-1" class="tab-content">
-            <form method="post" action="processBasic.jsp">
+            <form method="get" name="sensorActionForm" action="processBasic.jsp" onsubmit="return validateSensorSelection()">
                 <img src="../html/images/sensors.png" width="80px" style="float: right;"/>
                 <b>Select the IoT Sensor to analyze</b>  <br/>
                 <div  class="select-dropdown color-blue shape-blue-square">
-                    <select style="color:black" id="select-sensor" onchange="showSensorActions()">
+                    <select name='sensorType' style="color:black" id="select-sensor" onchange="showSensorActions()">
                         <option value="empty" selected>Select One Below</option>
                         <option value="fall-detection">Fall Detection</option>
                         <option value="seismic">Seismic Sensor</option>

@@ -4,8 +4,6 @@
 
 .name {color:gray;}
 
-.array {background-color:#FFD8BB;border:thin solid #FFB780;}
-.object {background-color:#E7F1FE;border:thin solid #7DA2CE;}
 .string {color:red;}
 .number {color:blue;}
 .function {color:green;}

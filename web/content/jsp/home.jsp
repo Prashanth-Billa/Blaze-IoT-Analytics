@@ -41,7 +41,7 @@ Welcome <%=session.getAttribute("userid")%>
 
 <div align="center">
     <h1> <img src="../html/images/logo.png" width="150px"/> <br/>
-        Blaze - An IoT Analytics framework</h1><br/><h2 style="font-family: Quicksand;">Using Hadoop, Hive and HBase</h2><br/>
+        Blaze - An IoT Analytics framework</h1><br/><h2 style="font-family: Quicksand;">Using Hadoop and Hive</h2><br/>
 </div>
 
 
@@ -49,7 +49,8 @@ Welcome <%=session.getAttribute("userid")%>
     <ul class="tabs-menu">
         <li class="current"><a href="#tab-1">Basic</a></li>
         <li><a href="#tab-2">Advanced</a></li>
-        <li><a href="#tab-3">Dashboard</a></li>
+        <li><a href="#tab-3">Executed Tasks</a></li>
+        <li><a href="#tab-4">Hadoop and Hive Status</a></li>
     </ul>
     <div class="tab">
         <div id="tab-1" class="tab-content">
@@ -69,8 +70,8 @@ Welcome <%=session.getAttribute("userid")%>
                 <br/><br/>
                 <img src="../html/images/task.png" width="80px" style="float: right;"/>
                 <b>Select the task for analysis</b> <br>
-                <div style="color:black" class="select-dropdown color-blue shape-blue-square">
-                    <select style="color:black" id="sensor-actions" onclick="checkSensorSelected()">
+                <div style="color:black; width: 500px" class="select-dropdown color-blue shape-blue-square">
+                    <select style="color:black; width: 500px" id="sensor-actions" onclick="checkSensorSelected()">
                     </select>
                 </div>
                 <br/>
@@ -97,6 +98,9 @@ Welcome <%=session.getAttribute("userid")%>
         <div id="tab-3" class="tab-content">
             <b>Tasks Executed by you</b><br/><img src="../html/images/tasks.png" width="80px"/><br/><br>
             <%@ page import="java.sql.*" %>
+            <%@ page import="java.io.BufferedReader" %>
+            <%@ page import="java.io.InputStreamReader" %>
+            <%@ page import="java.io.FileReader" %>
 
             <%
                 Class.forName("com.mysql.jdbc.Driver");
@@ -117,6 +121,27 @@ Welcome <%=session.getAttribute("userid")%>
                     out.println("</tbody></table>");
                 }
 
+            %>
+        </div>
+        <div id="tab-4" class="tab-content">
+                <br/>
+            <h2>Hadoop and Hive Environment: </h2>
+            <%@ page import="IoT.HiveQueryExecutor" %>
+            <%@ page import="java.sql.*" %>
+            <%
+                try{
+                    String returnedValue = IoT.HiveQueryExecutor.executeQuery("show tables");
+                    if("Please check the Connection to HDFS and Hive".equals(returnedValue)){
+                        out.println("<span style='color:red; font-weight: bold'>The environment is not setup! </span>");
+                        out.println("<br/><br/><span style='color:red; font-weight: bold'>Execute ./start-dfs.sh in $HADOOP_HOME/sbin </span>");
+                        out.println("<br/><br/><span style='color:red; font-weight: bold'>Execute ./start-yarn.sh in $HADOOP_HOME/sbin</span>");
+                        out.println("<br/><br/><span style='color:red; font-weight: bold'>Execute 'hive --service hiveserver2'</span>");
+                    }else{
+                        out.println("<span style='color:green; font-weight: bold'>The environment is setup. Kudos!</span>");
+                    }
+                }catch(Exception e){
+
+                }
             %>
         </div>
     </div>

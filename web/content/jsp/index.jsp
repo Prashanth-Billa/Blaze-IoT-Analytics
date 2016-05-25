@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Cantarell" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-    <title>IoT Analytics using Hadoop, Hive and HBase</title>
+    <title>IoT Analytics using Hadoop and Hive</title>
 </head>
 <body style="background: #2F0B3A; color: white">
 <form method="post" action="login.jsp">
@@ -17,7 +17,7 @@
             <h1 style="font-family: Quicksand;">Blaze - An IoT Analytics framework</h1><br/><h2 style="font-family: Quicksand;">Using Hadoop, Hive and HBase</h2><br/>
             <h3 style="font-family: Quicksand;">~ Under Prof. Nalini Venkatasubramanian</h3><br/>
         </div>
-        <div align="center" style="border: solid 2px grey; width: 500px; color: white; font-family: Quicksand;">
+        <div align="center" style="border: solid 2px grey; width: 500px; color: white; font-family: Quicksand; background: #E5E4E2; color: black; font-weight: bold">
 
 
         <table  width="30%" cellpadding="3">

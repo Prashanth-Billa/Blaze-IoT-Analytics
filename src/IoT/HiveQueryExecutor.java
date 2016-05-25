@@ -1,5 +1,6 @@
 package IoT;
 
+import java.net.ConnectException;
 import java.sql.*;
 
 public class HiveQueryExecutor {
@@ -12,8 +13,16 @@ public class HiveQueryExecutor {
             return "error :" + e.getMessage();
         }
         StringBuilder str = new StringBuilder();
-        Connection con = DriverManager.getConnection("jdbc:hive2://localhost:10000/default", "hadoop", "");
-        Statement stmt = con.createStatement();
+        Connection con = null;
+        Statement stmt = null;
+        try{
+            con = DriverManager.getConnection("jdbc:hive2://localhost:10000/default", "hadoop", "");
+            stmt = con.createStatement();
+        }catch(SQLException e){
+            return "Please check the Connection to HDFS and Hive. Please validate the query.";
+        } catch(Exception e){
+            return  "Please check the Connection to HDFS and Hive. Please validate the query.";
+        }
 
         ResultSet res = null;
         ResultSetMetaData resMeta = null;

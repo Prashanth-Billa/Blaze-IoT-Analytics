@@ -26,7 +26,7 @@ Welcome <%=session.getAttribute("userid")%>
     <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
     <link href="../html/css/json-tree.css" type="text/css" rel="stylesheet"/>
     <script src="../html/js/jquery-json-tree.js"></script>
-    <script src="../html/js/json-tree-advanced.js"></script>
+
 </head>
 <body>
 <div align="center">
@@ -81,7 +81,7 @@ Welcome <%=session.getAttribute("userid")%>
                                         out.println("<span style='color:red'>File is empty</span>");
                                     }else{
                                         firstLine = firstLine.substring(0, firstLine.lastIndexOf(","));
-                                        out.println("<script></script>");
+                                        out.println("<script>document.getElementById('inputAdvancedJSON').value = " + firstLine + "; var fallDetectionjson = " + firstLine + "; $('#inputAdvancedJSON').val(JSON.stringify(fallDetectionjson));  visualize(fallDetectionjson);</script>");
                                     }
                                     fileThere = true;
                                 }
@@ -146,7 +146,7 @@ Welcome <%=session.getAttribute("userid")%>
                 %>
             </div>
             <div id="tab-2" class="tab-content">
-                 <textarea id='inputJSON' type='text' style='width:100%;height:150px;margin-bottom:10px;display: none'>
+                 <textarea id='inputAdvancedJSON' type='text' style='width:100%;height:150px;margin-bottom:10px;display: none'>
 
                     </textarea>
                 <button id='btnVisualize' class='btn btn-primary' style='width:20%; display: none'>Visualize</button>
@@ -162,4 +162,5 @@ Welcome <%=session.getAttribute("userid")%>
 </div>
 
 </body>
+<script src="../html/js/json-tree-advanced.js"></script>
 </html>

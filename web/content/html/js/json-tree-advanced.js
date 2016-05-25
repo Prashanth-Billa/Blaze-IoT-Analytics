@@ -473,18 +473,18 @@ $(function(){
     // };
     // $('#json-renderer').jsonViewer(input, options);
 
-    var fallDetectionJson = {  "event":"SCALE_person_fall_detected_Android", "device":[   {  "id":"1111111111111111111111", "type":"personfall", "version":1.2 }],"location":[  {  "lat":33.6432, "lon":-117.8418 } ], "cond_freefall_threshold_val":"preset_freefall_threshold_val,","cond_impact_threshold_val":"preset_impact_threshold_val","value":"data","prio_class":"very high","prio_value":"3"};
-
-
-    $('#inputJSON').val(JSON.stringify(fallDetectionJson));
-    visualize(fallDetectionJson);
+    // var fallDetectionJson = {  "event":"SCALE_person_fall_detected_Android", "device":[   {  "id":"1111111111111111111111", "type":"personfall", "version":1.2 }],"location":[  {  "lat":33.6432, "lon":-117.8418 } ], "cond_freefall_threshold_val":"preset_freefall_threshold_val,","cond_impact_threshold_val":"preset_impact_threshold_val","value":"data","prio_class":"very high","prio_value":"3"};
+    //
+    //
+    // $('#inputAdvancedJSON').val(JSON.stringify(fallDetectionJson));
+    // visualize(fallDetectionJson);
 
 
 
 
     $('#btnVisualize').click(function() {
 
-        var json_string = $('#inputJSON').val();
+        var json_string = $('#inputAdvancedJSON').val();
 
         try
         {

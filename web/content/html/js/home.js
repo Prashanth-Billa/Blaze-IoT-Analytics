@@ -17,7 +17,7 @@ function showSensorActions(){
     if("fall-detection" == value){
 
         document.getElementById('sensor-actions').innerHTML = "";
-        var actions = ["Action1_1", "Action2_1", "Action3_1"];
+        var actions = ["What are the falls happening in a given region", "What is the region with the major number of falls", "Which time region(3to4hours slot) are falls happening", "How is the severity of the falls spread"];
         for(ele in actions)
         {
             var opt = document.createElement("option");
@@ -30,7 +30,7 @@ function showSensorActions(){
 
 
         document.getElementById('sensor-actions').innerHTML = "";
-        var actions = ["Action2_1", "Action2_2", "Action2_3"];
+        var actions = ["Which regions are active", "Which regions have large tremors", "Which regions have large duration for tremors", "What is the crossover between above three cases"];
         for(ele in actions)
         {
             var opt = document.createElement("option");
@@ -43,7 +43,7 @@ function showSensorActions(){
 
 
         document.getElementById('sensor-actions').innerHTML = "";
-        var actions = ["Action3_1", "Action3_2", "Action3_3"];
+        var actions = ["How many high priority class events are happening", "How many events with priority value = 10 are happening", "How frequently sprinkleron events are occuring", "What is the overall event rate of the humidity system"];
         for(ele in actions)
         {
             var opt = document.createElement("option");
@@ -53,6 +53,8 @@ function showSensorActions(){
             index++;
         }
 
+    }else{
+        document.getElementById('sensor-actions').innerHTML = "";
     }
 }
 

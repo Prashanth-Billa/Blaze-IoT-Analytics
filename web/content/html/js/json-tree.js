@@ -1,28 +1,28 @@
 //Copyright (c) 2013 Crystalline Technologies
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'),
-//  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+//  to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
 //  and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
 //  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 //
-//  THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+//  THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 //  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 var json2html = {
-	
+
 	/* ---------------------------------------- Public Methods ------------------------------------------------ */
 	'transform': function(json,transform,_options) {
-		
+
 		//create the default output
 		var out = {'events':[],'html':''};
-		
+
 		//default options (by default we don't allow events)
 		var options = {
 			'events':false
 		};
-		
+
 		//extend the options
 		options = json2html._extend(options,_options);
 
@@ -31,19 +31,19 @@ var json2html = {
 
 			//Normalize strings to JSON objects if necessary
 			var obj = typeof json === 'string' ? JSON.parse(json) : json;
-			
+
 			//Transform the object (using the options)
 			out = json2html._transform(obj, transform, options);
 		}
-		
+
 		//determine if we need the events
 		// otherwise return just the html string
 		if(options.events) return(out);
 			else return( out.html );
 	},
-	
+
 	/* ---------------------------------------- Private Methods ------------------------------------------------ */
-	
+
 	//Extend options
 	'_extend':function(obj1,obj2){
 		var obj3 = {};
@@ -51,7 +51,7 @@ var json2html = {
 		for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
 		return obj3;
 	},
-	
+
 	//Append results
 	'_append':function(obj1,obj2) {
 		var out = {'html':'','event':[]};
@@ -68,18 +68,18 @@ var json2html = {
 	'_isArray':function(obj) {
 		return Object.prototype.toString.call(obj) === '[object Array]';
 	},
-	
+
 	//Transform object
 	'_transform':function(json, transform, options) {
-		
+
 		var elements = {'events':[],'html':''};
-		
+
 		//Determine the type of this object
 		if(json2html._isArray(json)) {
-			
+
 			//Itterrate through the array and add it to the elements array
 			var len=json.length;
-			for(var j=0;j<len;++j) {	
+			for(var j=0;j<len;++j) {
 				//Apply the transform to this object and append it to the results
 				elements = json2html._append(elements,json2html._apply(json[j], transform, j, options));
 			}
@@ -91,17 +91,17 @@ var json2html = {
 		}
 
 		//Return the resulting elements
-		return(elements);		
+		return(elements);
 	},
 
 	//Apply the transform at the second level
 	'_apply':function(obj, transform, index, options) {
 
 		var element = {'events':[],'html':''};
-		
+
 		//Itterate through the transform and create html as needed
 		if(json2html._isArray(transform)) {
-			
+
 			var t_len = transform.length;
 			for(var t=0; t < t_len; ++t) {
 				//transform the object and append it to the output
@@ -120,7 +120,7 @@ var json2html = {
 
 				//Create a new object for the children
 				var children = {'events':[],'html':''};
-				
+
 				//innerHTML
 				var html;
 
@@ -139,7 +139,7 @@ var json2html = {
 								//Apply the transform to the children
 								children = json2html._append(children,json2html._apply(obj, transform.children, index, options));
 							} else if(typeof transform.children === 'function') {
-								
+
 								//Get the result from the function
 								var temp = transform.children.call(obj, obj, index);
 
@@ -165,11 +165,11 @@ var json2html = {
 						default:
 							//Add the property as a attribute if it's not a key one
 							var isEvent = false;
-							
+
 							//Check if the first two characters are 'on' then this is an event
 							if( key.length > 2 )
 								if(key.substring(0,2).toLowerCase() == 'on') {
-									
+
 									//Determine if we should add events
 									if(options.events) {
 
@@ -180,7 +180,7 @@ var json2html = {
 											'data':options.eventData,
 											'index':index
 										};
-										
+
 										//create a new id for this event
 										var id = json2html._guid();
 
@@ -198,15 +198,15 @@ var json2html = {
 							if( !isEvent){
 								//Get the value
 								var val = json2html._getValue(obj, transform, key, index);
-								
+
 								//Make sure we have a value
                                 if(val !== undefined) {
                                     var out;
-                                    
+
                                     //Determine the output type of this value (wrap with quotes)
                                     if(typeof val === 'string') out = '"' + val.replace(/"/g, '&quot;') + '"';
                                     else out = val;
-                                    
+
                                     //creat the name value pair
 								    element.html += ' ' + key + '=' + out;
                                 }
@@ -217,7 +217,7 @@ var json2html = {
 
 				//close the opening tag
 				element.html += '>';
-				
+
 				//add the innerHTML (if we have any)
 				if(html) element.html += html;
 
@@ -228,7 +228,7 @@ var json2html = {
 				element.html += '</' + tag + '>';
 			}
 		}
-		
+
 		//Return the output object
 		return(element);
 	},
@@ -243,12 +243,12 @@ var json2html = {
 
 	//Get the html value of the object
 	'_getValue':function(obj, transform, key,index) {
-		
+
 		var out = '';
-		
+
 		var val = transform[key];
 		var type = typeof val;
-		
+
 		if (type === 'function') {
 			return(val.call(obj,obj,index));
 		} else if (type === 'string') {
@@ -256,7 +256,7 @@ var json2html = {
 				/\$\{([^\}\{]+)\}/
 			],function( src, real, re ){
 				return real ? src.replace(re,function(all,name){
-					
+
 					//Split the string into it's seperate components
 					var components = name.split('.');
 
@@ -265,7 +265,7 @@ var json2html = {
 
 					//Output value
 					var outVal = '';
-					
+
 					//Parse the object components
 					var c_len = components.length;
 					for (var i=0;i<c_len;++i) {
@@ -277,14 +277,14 @@ var json2html = {
 							if(useObj === null || useObj === undefined) break;
 						}
 					}
-					
+
 					//As long as we have an object to use then set the out
 					if(useObj !== null && useObj !== undefined) outVal = useObj;
 
 					return(outVal);
 				}) : src;
 			});
-			
+
 			out = _tokenizer.parse(val).join('');
 		} else {
 			out = val;
@@ -292,13 +292,13 @@ var json2html = {
 
 		return(out);
 	},
-	
+
 	//Tokenizer
 	'_tokenizer':function( tokenizers, doBuild ){
 
 		if( !(this instanceof json2html._tokenizer ) )
 			return new json2html._tokenizer( tokenizers, doBuild );
-			
+
 		this.tokenizers = tokenizers.splice ? tokenizers : [tokenizers];
 		if( doBuild )
 			this.doBuild = doBuild;
@@ -312,29 +312,29 @@ var json2html = {
 			} while( !this.ended );
 			return this.tokens;
 		};
-		
+
 		this.build = function( src, real ){
 			if( src )
 				this.tokens.push(
 					!this.doBuild ? src :
 					this.doBuild(src,real,this.tkn)
-				);	
+				);
 		};
 
 		this.next = function(){
 			var self = this,
 				plain;
-				
+
 			self.findMin();
 			plain = self.src.slice(0, self.min);
-			
+
 			self.build( plain, false );
-				
+
 			self.src = self.src.slice(self.min).replace(self.tkn,function( all ){
 				self.build(all, true);
 				return '';
 			});
-			
+
 			if( !self.src )
 				self.ended = true;
 		};
@@ -343,7 +343,7 @@ var json2html = {
 			var self = this, i=0, tkn, idx;
 			self.min = -1;
 			self.tkn = '';
-			
+
 			while(( tkn = self.tokenizers[i++]) !== undefined ){
 				idx = self.src[tkn.test?'search':'indexOf'](tkn);
 				if( idx != -1 && (self.min == -1 || idx < self.min )){
@@ -373,7 +373,7 @@ var transforms = {
 				var classes = ["arrow"];
 
 				if( getValue(obj.value) !== undefined ) classes.push("hide");
-				
+
 				return(classes.join(' '));
 			}},
 			{'tag':'span','class':'name','html':'${name}'},
@@ -511,12 +511,12 @@ $(function(){
 });
 
 function visualize(json) {
-	
+
 	$('#top').html('');
 
 	$('#top').json2html(convert('json',json,'open'),transforms.object);
 
-	regEvents();		
+	regEvents();
 }
 
 function getValue(obj) {
@@ -562,11 +562,11 @@ function children(obj){
 }
 
 function convert(name,obj,show) {
-	
+
 	var type = $.type(obj);
 
 	if(show === undefined) show = 'closed';
-	
+
 	var children = [];
 
 	//Determine the type of this object
@@ -575,7 +575,7 @@ function convert(name,obj,show) {
 			//Transform array
 			//Itterrate through the array and add it to the elements array
 			var len=obj.length;
-			for(var j=0;j<len;++j){	
+			for(var j=0;j<len;++j){
 				//Concat the return elements from this objects tranformation
 				children[j] = convert(j,obj[j]);
 			}
@@ -587,7 +587,7 @@ function convert(name,obj,show) {
 			for(var prop in obj) {
 				children[j] = convert(prop,obj[prop]);
 				j++;
-			}	
+			}
 		break;
 
 		default:
@@ -597,7 +597,7 @@ function convert(name,obj,show) {
 	}
 
 	return( {'name':name,'value':children,'type':type,'show':show} );
-	
+
 }
 
 function regEvents() {
@@ -611,6 +611,6 @@ function regEvents() {
 		} else {
 			parent.removeClass('open');
 			parent.addClass('closed');
-		}		
+		}
 	});
 }

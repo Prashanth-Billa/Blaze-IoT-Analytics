@@ -1,0 +1,4 @@
+javac -classpath $HADOOP_HOME/hadoop-common-0.21.0.jar:$HADOOP_HOME/hadoop-hdfs-0.21.0.jar:$HADOOP_HOME/hadoop-mapred-0.21.0.jar ./YSmartCode/*.java -d .
+jar -cf ./YSmartJar/filename1.jar edu/osu/cse/ysmart/filename/
+$HADOOP_HOME/bin/hadoop jar ./YSmartJar/filename1.jar edu/osu/cse/ysmart/filename/filename2 YSmartInput//LINEORDER/ YSmartInput//DDATE/ YSmartOutput//filename2/
+$HADOOP_HOME/bin/hadoop jar ./YSmartJar/filename1.jar edu/osu/cse/ysmart/filename/filename1 YSmartOutput//filename2 YSmartOutput//filename1/

@@ -39,41 +39,19 @@ Welcome <%=session.getAttribute("userid")%>
             <div id="tab-1" style="width:1000px" class="tab-content">
                 <div id="myDiv"></div>
                 <%@ page import="IoT.HiveQueryExecutor" %>
+                <%@ page import="IoT.SeismicSensorHandler" %>
                 <%@ page import="java.sql.*" %>
-                <%@ page import="java.io.FileWriter" %>
-                <%@ page import="java.io.File" %>
                 <%
                     String sensor = request.getParameter("sensorType").toString();
                     String sensorAction = request.getParameter("sensor-action-value").toString();
-
+                    int returnValue = 0;
 
                     if("seismic".equals(sensor)){
                         if("0".equals(sensorAction)){
-
-                            FileWriter fileWriter = new FileWriter("/home/hadoop/IdeaProjects/IoT Analytics/web/content/CSV/seismicIntensity.csv");
-                            fileWriter.append("name,val,lat,lon");
-                            fileWriter.append("\n");
-                            String ret1 = IoT.HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS seismicTable");
-                            String ret2 = IoT.HiveQueryExecutor.executeQuery("CREATE TABLE seismicTable (json STRING)");
-                            String ret3 = IoT.HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE seismicTable");
-
-                            String value = IoT.HiveQueryExecutor.executeQuery("SELECT get_json_object(seismicTable.json, \"$.location.lat\"), get_json_object(seismicTable.json, \"$.location.lon\") FROM seismicTable");
-                            String[] tokens = value.split("<br/>");
-                            for(int i = 0; i < tokens.length; i++){
-                                String[] val = tokens[i].split(" ");
-                                fileWriter.append("CS237!!!!!!!!");
-                                fileWriter.append(",");
-                                fileWriter.append("8287238");
-                                fileWriter.append(",");
-                                fileWriter.append(val[0]);
-                                fileWriter.append(",");
-                                fileWriter.append(val[1]);
-                                fileWriter.append("\n");
-                                break;
-
+                            returnValue = IoT.SeismicSensorHandler.generateGraph(0);
+                            if(returnValue < 0){
+                                out.println("Error in generating graph as the data file could not be generated");
                             }
-                            fileWriter.flush();
-                            fileWriter.close();
                         }
                     }
                 %>
@@ -94,63 +72,6 @@ Welcome <%=session.getAttribute("userid")%>
         </div>
     </div>
 </div>
-<script>
-    Plotly.d3.csv('../CSV/seismicIntensity.csv', function(err, rows){
-        function unpack(rows, key) {
-            return rows.map(function(row) { return row[key]; });
-        }
-        var cityName = unpack(rows, 'name'),
-                cityPop = unpack(rows, 'val'),
-                cityLat = unpack(rows, 'lat'),
-                cityLon = unpack(rows, 'lon'),
-                color = [,"rgb(255,65,54)","rgb(133,20,75)","rgb(255,133,27)","lightgrey"],
-                citySize = [],
-                hoverText = [],
-                scale = 50000;
-
-        for ( var i = 0 ; i < cityPop.length; i++) {
-            var currentSize = cityPop[i] / scale;
-            var currentText = cityName[i] + "<br>Population: " + cityPop[i];
-            citySize.push(currentSize);
-            hoverText.push(currentText);
-        }
-
-        var data = [{
-            type: 'scattergeo',
-            locationmode: 'USA-states',
-            lat: cityLat,
-            lon: cityLon,
-            text: hoverText,
-            hoverinfo: 'text',
-            marker: {
-                size: citySize,
-                line: {
-                    color: 'black',
-                    width: 2
-                },
-
-            }
-        }];
-
-        var layout = {
-            title: 'Seismic Sensor Plot',
-            showlegend: false,
-            geo: {
-                scope: 'usa',
-                projection: {
-                    type: 'albers usa'
-                },
-                showland: true,
-                landcolor: 'rgb(217, 217, 217)',
-                subunitwidth: 1,
-                countrywidth: 1,
-                subunitcolor: 'rgb(255,255,255)',
-                countrycolor: 'rgb(255,255,255)'
-            },
-        };
-
-        Plotly.plot(myDiv, data, layout, {showLink: false});
-    });
-</script>
+<script src="../html/js/graphPlotHelper.js"></script>
 </body>
 </html>

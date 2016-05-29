@@ -486,7 +486,6 @@ $(function(){
 		$('#inputJSON').val(JSON.stringify(fallDetectionJson));
 		visualize(fallDetectionJson);
 	}else{
-		alert("nope");
 		$('#inputJSON').val(JSON.stringify(fallDetectionJson));
 		visualize(fallDetectionJson);
 	}

@@ -27,6 +27,7 @@ Welcome <%=session.getAttribute("userid")%>
     <link href="../html/css/json-tree.css" type="text/css" rel="stylesheet"/>
     <script src="../html/js/jquery-json-tree.js"></script>
 
+
 </head>
 <body>
 <div align="center">
@@ -35,7 +36,7 @@ Welcome <%=session.getAttribute("userid")%>
         <ul class="tabs-menu">
             <li class="current"><a href="#tab-1">Result</a></li>
             <li><a href="#tab-2">Sensor Information</a></li>
-            <li><a href="#tab-3">Logs</a></li>
+            <!--<li><a href="#tab-3">Logs</a></li>-->
         </ul>
         <div class="tab">
             <div id="tab-1" class="tab-content">
@@ -108,7 +109,6 @@ Welcome <%=session.getAttribute("userid")%>
                         out.println("</html>");
                     }
                 %>
-
                 <%@ page import="IoT.HiveQueryExecutor" %>
                 <%@ page import="java.sql.*" %>
                 <%
@@ -139,10 +139,9 @@ Welcome <%=session.getAttribute("userid")%>
                         }catch(Exception ex){
                             out.println("<span style='color:red'>Submit a valid query / file" + ex.getLocalizedMessage());
                         }
-                    }else{
+                    }else {
                         out.println("<span style='color:red'>Submit a valid query / file");
                     }
-
                 %>
             </div>
             <div id="tab-2" class="tab-content">

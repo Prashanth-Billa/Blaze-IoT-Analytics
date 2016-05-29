@@ -54,15 +54,18 @@ Welcome <%=session.getAttribute("userid")%>
     </ul>
     <div class="tab">
         <div id="tab-1" class="tab-content">
-            <form method="get" name="sensorActionForm" action="processBasic.jsp" onsubmit="return validateSensorSelection()">
+            <form method="get" name="sensorActionForm" action="processBasic.jsp" id="sensorActionFormId" onsubmit="return validateSensorSelection()">
                 <img src="../html/images/sensors.png" width="80px" style="float: right;"/>
                 <b>Select the IoT Sensor to analyze</b>  <br/>
                 <div  class="select-dropdown color-blue shape-blue-square">
                     <select name='sensorType' style="color:black" id="select-sensor" onchange="showSensorActions()">
                         <option value="empty" selected>Select One Below</option>
-                        <option value="fall-detection">Fall Detection</option>
+                        <option value="cross-correlation">Cross Correlation</option>
+                        <option value="air-pollution">Air Pollution Sensor</option>
+                        <option value="traffic">Traffic Management Sensor</option>
                         <option value="seismic">Seismic Sensor</option>
                         <option value="humidity">Humidity Sensor</option>
+                        <option value="fall-detection">Fall Detection</option>
                     </select>
                 </div>
                 <br/>
@@ -70,8 +73,8 @@ Welcome <%=session.getAttribute("userid")%>
                 <br/><br/>
                 <img src="../html/images/task.png" width="80px" style="float: right;"/>
                 <b>Select the task for analysis</b> <br>
-                <div style="color:black; width: 500px" class="select-dropdown color-blue shape-blue-square">
-                    <select style="color:black; width: 500px" id="sensor-actions" onclick="checkSensorSelected()">
+                <div style="color:black; width: 500px" class="select-dropdown color-blue shape-blue-square" name="div-name">
+                    <select style="color:black; width: 500px" id="sensor-actions" name='sensor-action-value' onclick="checkSensorSelected()">
                     </select>
                 </div>
                 <br/>
@@ -113,7 +116,7 @@ Welcome <%=session.getAttribute("userid")%>
                 }else{
                     String uid = session.getAttribute("userid").toString();
                     rs = st.executeQuery("select * from queryHistory where username='" + uid + "' order by submit_time DESC");
-                    out.println("<table id='history' class='display' cellspacing='0' width='100%'>");
+                    out.println("<table id='history' style='overflow:scroll' class='display' cellspacing='0' width='100%'>");
                     out.println("<thead><tr><th>Mode</th><th>File name</th><th>Query</th><th>Result</th><th>Submit Time</th></tr></thead><tbody>");
                     while(rs.next()){
                         out.println("<tr><td>" + rs.getString("mode") + "</td><td>" + rs.getString("filename") + "</td><td>" + rs.getString("query") + "</td><td>" + rs.getString("result") + "</td><td>" + rs.getString("submit_time") + "</td></tr>");
@@ -131,8 +134,8 @@ Welcome <%=session.getAttribute("userid")%>
             <%
                 try{
                     String returnedValue = IoT.HiveQueryExecutor.executeQuery("show tables");
-                    if("Please check the Connection to HDFS and Hive".equals(returnedValue)){
-                        out.println("<span style='color:red; font-weight: bold'>The environment is not setup! </span>");
+                    if("Please check the Connection to HDFS and Hive".equals(returnedValue) || "Please check the Connection to HDFS and Hive. Please validate the query.".equals(returnedValue)){
+                        out.println("<span style='color:red; font-weight: bold'>The environment is not setup. </span>");
                         out.println("<br/><br/><span style='color:red; font-weight: bold'>Execute ./start-dfs.sh in $HADOOP_HOME/sbin </span>");
                         out.println("<br/><br/><span style='color:red; font-weight: bold'>Execute ./start-yarn.sh in $HADOOP_HOME/sbin</span>");
                         out.println("<br/><br/><span style='color:red; font-weight: bold'>Execute 'hive --service hiveserver2'</span>");

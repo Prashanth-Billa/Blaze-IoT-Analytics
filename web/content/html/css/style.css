@@ -175,3 +175,18 @@ pre#json-renderer {
     font-color: grey;
     border: 2px solid lightcoral;
 }
+
+.axis {
+    font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.axis {
+    font: 10px sans-serif;
+}

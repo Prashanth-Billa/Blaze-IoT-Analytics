@@ -25,6 +25,7 @@ Welcome <%=session.getAttribute("userid")%>
     <script src="../html/js/jquery-json-tree.js"></script>
     <script src="../html/js/json-tree.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
 </head>
 <body>
 <div align="center">
@@ -40,7 +41,10 @@ Welcome <%=session.getAttribute("userid")%>
                 <div id="myDiv"></div>
                 <%@ page import="IoT.HiveQueryExecutor" %>
                 <%@ page import="IoT.SeismicSensorHandler" %>
+                <%@ page import="IoT.AirPollutionHandler" %>
                 <%@ page import="java.sql.*" %>
+                <%@ page import="java.io.FileWriter" %>
+                <%@ page import="java.io.IOException" %>
                 <%
                     String sensor = request.getParameter("sensorType").toString();
                     String sensorAction = request.getParameter("sensor-action-value").toString();
@@ -53,8 +57,18 @@ Welcome <%=session.getAttribute("userid")%>
                                 out.println("Error in generating graph as the data file could not be generated");
                             }
                         }
+                    }else if("air-pollution".equals(sensor)) {
+                        if ("0".equals(sensorAction)) {
+                            returnValue = IoT.AirPollutionHandler.generateGraph(0);
+                            if (returnValue < 0) {
+                                out.println("Error in generating graph as the data file could not be generated");
+                            }
+                        }
                     }
+
+
                 %>
+                <script src="../html/js/graphPlotHelper.js"></script>
             </div>
             <div id="tab-2" class="tab-content">
                     <textarea id='inputJSON' type='text' style='width:100%;height:150px;margin-bottom:10px;display: none'>
@@ -72,6 +86,6 @@ Welcome <%=session.getAttribute("userid")%>
         </div>
     </div>
 </div>
-<script src="../html/js/graphPlotHelper.js"></script>
+
 </body>
 </html>

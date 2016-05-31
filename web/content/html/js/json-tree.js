@@ -474,20 +474,30 @@ $(function(){
 	// $('#json-renderer').jsonViewer(input, options);
 
 	var sensorType = getUrlVars()["sensorType"];
+
 	var fallDetectionJson = {  "event":"SCALE_person_fall_detected_Android", "device":[   {  "id":"1111111111111111111111", "type":"personfall", "version":1.2 }],"location":[  {  "lat":33.6432, "lon":-117.8418 } ], "cond_freefall_threshold_val":"preset_freefall_threshold_val,","cond_impact_threshold_val":"preset_impact_threshold_val","value":"data","prio_class":"very high","prio_value":"3"};
+
+	var seismicJson = {"cond_aftershock_time": {"unit": "seconds", "value": 85}, "duration": {"duration": 7, "units": "seconds"}, "misc": "null", "device": {"platform": "Sheeva", "version": "1.2", "type": "seismic", "id": 1}, "prio_value": 2, "prio_class": "High", "date": "2010-3-4", "event": "SCALE_large_aftershock_Sheeva", "value": 5.0, "cond_impact_threshold_val": {"unit": "seconds", "value": "25"}, "location": {"city": null, "country": "US", "lon": -106.3977, "state": "NM", "street": "Wsmr P Route 12", "lat": 33.5084}, "time": "11:15:46", "cond_freefall_threshold_val": {"unit": "Richter", "value": "2"}}
+
+	var humidityJson = {"prio_class": "very High", "value": "data", "prio_value": 3, "location": {"city": "Clay City", "country": "US", "lon": -88.314, "state": "IL", "street": "County Road 2100 East", "lat": 38.7121}, "time": "16:27:16", "date": "2003-4-18", "cond_threshold_time": {"unit": "seconds", "value": "20"}, "id": 1, "cond_threshold_val": {"unit": "percent", "value": "25"}, "event": "SCALE_low_humidity_RPi"}
+
+	var airPollutionJson = {"prio_value": 2, "prio_class": "High", "time": "11:37:48", "date": "2009-12-11", "pollutants": {"averaging": {"units": "hours", "time": 1}, "pol": "CO2", "value": 14.1585, "unit": "mg/m^3", "time": "11:37:48"}, "id": 1, "location": {"city": "Portland", "country": "US", "lon": -86.4047, "state": "TN", "street": "South Martin Road", "lat": 36.5735}}
 
 	if(sensorType == "fall-detection"){
 		$('#inputJSON').val(JSON.stringify(fallDetectionJson));
 		visualize(fallDetectionJson);
 	}else if(sensorType == "seismic"){
-		$('#inputJSON').val(JSON.stringify(fallDetectionJson));
-		visualize(fallDetectionJson);
+		$('#inputJSON').val(JSON.stringify(seismicJson));
+		visualize(seismicJson);
 	}else if(sensorType == "humidity"){
-		$('#inputJSON').val(JSON.stringify(fallDetectionJson));
-		visualize(fallDetectionJson);
+		$('#inputJSON').val(JSON.stringify(humidityJson));
+		visualize(humidityJson);
+	}else if(sensorType == "air-pollution"){
+		$('#inputJSON').val(JSON.stringify(airPollutionJson));
+		visualize(airPollutionJson);
 	}else{
-		$('#inputJSON').val(JSON.stringify(fallDetectionJson));
-		visualize(fallDetectionJson);
+		$('#inputJSON').val(JSON.stringify(seismicJson));
+		visualize(seismicJson);
 	}
 
 

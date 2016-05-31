@@ -1,4 +1,0 @@
-javac -classpath $HADOOP_HOME/hadoop-common-0.21.0.jar:$HADOOP_HOME/hadoop-hdfs-0.21.0.jar:$HADOOP_HOME/hadoop-mapred-0.21.0.jar ./YSmartCode/*.java -d .
-jar -cf ./YSmartJar/testquery1.jar edu/osu/cse/ysmart/testquery/
-$HADOOP_HOME/bin/hadoop jar ./YSmartJar/testquery1.jar edu/osu/cse/ysmart/testquery/testquery2 YSmartInput//LINEORDER/ YSmartInput//DDATE/ YSmartOutput//testquery2/
-$HADOOP_HOME/bin/hadoop jar ./YSmartJar/testquery1.jar edu/osu/cse/ysmart/testquery/testquery1 YSmartOutput//testquery2 YSmartOutput//testquery1/

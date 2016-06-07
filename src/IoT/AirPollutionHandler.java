@@ -6,10 +6,9 @@ import java.sql.SQLException;
 
 public class AirPollutionHandler {
 
-    public static int generateGraph(int action){
+    public static int findPollutantsLevelInSpecificDuration(){
         boolean failed = false;
         FileWriter fileWriter = null;
-        if(action == 0){
             try {
                 fileWriter = new FileWriter("/home/hadoop/IdeaProjects/Blaze-IoT-Analytics/web/content/CSV/airPollution_1.csv");
                 fileWriter.append("date,value");
@@ -52,7 +51,12 @@ public class AirPollutionHandler {
                 }
             }
 
-        }else if(action == 1){
+        return 0;
+        }
+
+        public static int findPollutantTypePercentage(){
+            boolean failed = false;
+            FileWriter fileWriter = null;
             try {
                 fileWriter = new FileWriter("/home/hadoop/IdeaProjects/IoT Analytics/web/content/CSV/airPollution_2.csv");
                 fileWriter.append("pollutant,level");
@@ -91,7 +95,22 @@ public class AirPollutionHandler {
                     return -1;
                 }
             }
-        }
         return 0;
+    }
+
+    public static int generateGraph() {
+        return 0;
+    }
+
+    public static String findTopCitiesWithHighestPollutants() {
+        return "";
+    }
+
+    public static String findCityWithMaximumNumberOfPollutants() {
+        return "";
+    }
+
+    public static String findPollutantEmittedInMaximumNumberOfCities() {
+        return "";
     }
 }

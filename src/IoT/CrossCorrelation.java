@@ -60,4 +60,24 @@ public class CrossCorrelation {
         }
         return 0;
     }
+
+    public static int findAirQualityWithTrafficInEachHour() {
+        return 0;
+    }
+
+    public static String findCitiesWithMaximumTrafficAndAirPollutantsEmitted() {
+        return "";
+    }
+
+    public static String findCitiesWithMaximumTrafficAndRelatePolutionHumidity() {
+        return "";
+    }
+
+    public static String findPollutantEmittedInMaximumNumberOfCities() {
+        return "";
+    }
+
+    public static String findMostCongestedCitiesAndRelateWithSeismicScale() {
+        return "";
+    }
 }

@@ -39,33 +39,150 @@ Welcome <%=session.getAttribute("userid")%>
         <div class="tab">
             <div id="tab-1" style="width:1000px" class="tab-content">
                 <div id="myDiv"></div>
-                <%@ page import="IoT.HiveQueryExecutor" %>
-                <%@ page import="IoT.SeismicSensorHandler" %>
-                <%@ page import="IoT.AirPollutionHandler" %>
                 <%@ page import="java.sql.*" %>
                 <%@ page import="java.io.FileWriter" %>
                 <%@ page import="java.io.IOException" %>
+                <%@ page import="IoT.*" %>
                 <%
                     String sensor = request.getParameter("sensorType").toString();
                     String sensorAction = request.getParameter("sensor-action-value").toString();
                     int returnValue = 0;
 
+                    String output = "";
                     if("seismic".equals(sensor)){
                         if("0".equals(sensorAction)){
-                            returnValue = IoT.SeismicSensorHandler.generateGraph(0);
+                            returnValue = IoT.SeismicSensorHandler.generateMapWithSeismicIntensities();
                             if(returnValue < 0){
                                 out.println("Error in generating graph as the data file could not be generated");
                             }
                         }
+
+                        if("1".equals(sensorAction)){
+                            output = IoT.SeismicSensorHandler.findMostActiveRegions();
+                            out.println(output);
+                        }
+
+                        if("2".equals(sensorAction)){
+                            output = IoT.SeismicSensorHandler.findRegionsWithLargeTremors();
+                            out.println(output);
+                        }
+
+                        if("3".equals(sensorAction)){
+                            output = IoT.SeismicSensorHandler.findRegionsWithLargeDurationForTremors();
+                            out.println(output);
+                        }
+
+                        if("4".equals(sensorAction)){
+                            output = IoT.SeismicSensorHandler.findCrossOverRegionsActiveLargeLongDuration();
+                            out.println(output);
+                        }
+
+
                     }else if("air-pollution".equals(sensor)) {
                         if ("0".equals(sensorAction)) {
-                            returnValue = IoT.AirPollutionHandler.generateGraph(0);
+                            returnValue = IoT.AirPollutionHandler.findPollutantsLevelInSpecificDuration();
                             if (returnValue < 0) {
                                 out.println("Error in generating graph as the data file could not be generated");
                             }
                         }
-                    }
 
+                        if("1".equals(sensorAction)){
+                            output = IoT.AirPollutionHandler.findTopCitiesWithHighestPollutants();
+                            out.println(output);
+                        }
+
+                        if("2".equals(sensorAction)){
+                            output = IoT.AirPollutionHandler.findCityWithMaximumNumberOfPollutants();
+                            out.println(output);
+                        }
+
+                        if("3".equals(sensorAction)){
+                            output = IoT.AirPollutionHandler.findPollutantEmittedInMaximumNumberOfCities();
+                            out.println(output);
+                        }
+                    }else if("humidity".equals(sensor)) {
+                        if ("0".equals(sensorAction)) {
+                            returnValue = HumiditySensorHandler.generateGraph();
+                            if (returnValue < 0) {
+                                out.println("Error in generating graph as the data file could not be generated");
+                            }
+                        }
+
+                        if("1".equals(sensorAction)){
+                            output = HumiditySensorHandler.findTopCitiesWithHighestPollutants();
+                            out.println(output);
+                        }
+
+                        if("2".equals(sensorAction)){
+                            output = HumiditySensorHandler.findCityWithMaximumNumberOfPollutants();
+                            out.println(output);
+                        }
+
+                        if("3".equals(sensorAction)){
+                            output = HumiditySensorHandler.findPollutantEmittedInMaximumNumberOfCities();
+                            out.println(output);
+                        }
+                    }else if("traffic".equals(sensor)) {
+                        if ("0".equals(sensorAction)) {
+                            returnValue = TrafficSensorHandler.findMostCongestedCities();
+                            if (returnValue < 0) {
+                                out.println("Error in generating graph as the data file could not be generated");
+                            }
+                        }
+
+                        if("1".equals(sensorAction)){
+                            output = TrafficSensorHandler.findCongestionLevelInEachHourInACity();
+                            out.println(output);
+                        }
+
+                        if("2 ".equals(sensorAction)){
+                            output = TrafficSensorHandler.findPeakCongestionTime();
+                            out.println(output);
+                        }
+
+                    }else if("cross-correlation".equals(sensor)) {
+                        if ("0".equals(sensorAction)) {
+                            returnValue = CrossCorrelation.findAirQualityWithTrafficInEachHour();
+                            if (returnValue < 0) {
+                                out.println("Error in generating graph as the data file could not be generated");
+                            }
+                        }
+
+                        if("1".equals(sensorAction)){
+                            output = CrossCorrelation.findCitiesWithMaximumTrafficAndAirPollutantsEmitted();
+                            out.println(output);
+                        }
+
+                        if("2".equals(sensorAction)){
+                            output = CrossCorrelation.findCitiesWithMaximumTrafficAndRelatePolutionHumidity();
+                            out.println(output);
+                        }
+
+                        if("3".equals(sensorAction)){
+                            output = CrossCorrelation.findPollutantEmittedInMaximumNumberOfCities();
+                            out.println(output);
+                        }
+
+                        if("4".equals(sensorAction)){
+                            output = CrossCorrelation.findMostCongestedCitiesAndRelateWithSeismicScale();
+                            out.println(output);
+                        }
+                    }else if("fall-detection".equals(sensor)){
+                        if("0".equals(sensorAction)){
+                            output = FallDetectionSensorHandler.findFallsHappenningInGivenRegion();
+                            out.println(output);
+                        }
+
+                        if("1".equals(sensorAction)){
+                            output = FallDetectionSensorHandler.findRegionWithMajorNumberOfFalls();
+                            out.println(output);
+                        }
+
+                        if("2".equals(sensorAction)){
+                            output = FallDetectionSensorHandler.findTimeSlotAreFallsHappenningMostFrequently();
+                            out.println(output);
+                        }
+                    }
 
                 %>
                 <script src="../html/js/graphPlotHelper.js"></script>

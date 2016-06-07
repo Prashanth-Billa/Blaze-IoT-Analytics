@@ -6,10 +6,9 @@ import java.sql.SQLException;
 
 public class SeismicSensorHandler {
 
-    public static int generateGraph(int action){
+    public static int generateMapWithSeismicIntensities(){
         boolean failed = false;
         FileWriter fileWriter = null;
-        if(action == 0){
             try {
                 fileWriter = new FileWriter("/home/hadoop/IdeaProjects/Blaze-IoT-Analytics/web/content/CSV/seismicIntensity.csv");
                 fileWriter.append("name,val,lat,lon");
@@ -56,8 +55,22 @@ public class SeismicSensorHandler {
                     return -1;
                 }
             }
-
-        }
         return 0;
+    }
+
+    public static String findMostActiveRegions() {
+        return "";
+    }
+
+    public static String findRegionsWithLargeTremors() {
+        return "";
+    }
+
+    public static String findRegionsWithLargeDurationForTremors() {
+        return "";
+    }
+
+    public static String findCrossOverRegionsActiveLargeLongDuration() {
+        return "";
     }
 }

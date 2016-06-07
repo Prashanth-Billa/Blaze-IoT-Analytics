@@ -101,25 +101,19 @@ Welcome <%=session.getAttribute("userid")%>
                             out.println(output);
                         }
                     }else if("humidity".equals(sensor)) {
-                        if ("0".equals(sensorAction)) {
-                            returnValue = HumiditySensorHandler.generateGraph();
-                            if (returnValue < 0) {
-                                out.println("Error in generating graph as the data file could not be generated");
-                            }
-                        }
 
                         if("1".equals(sensorAction)){
-                            output = HumiditySensorHandler.findTopCitiesWithHighestPollutants();
+                            output = HumiditySensorHandler.findOverallEventRate();
                             out.println(output);
                         }
 
                         if("2".equals(sensorAction)){
-                            output = HumiditySensorHandler.findCityWithMaximumNumberOfPollutants();
+                            output = HumiditySensorHandler.findFrequencyOfSprinkleronEvent();
                             out.println(output);
                         }
 
                         if("3".equals(sensorAction)){
-                            output = HumiditySensorHandler.findPollutantEmittedInMaximumNumberOfCities();
+                            output = HumiditySensorHandler.findNumberOfHighPriorityClassEvents();
                             out.println(output);
                         }
                     }else if("traffic".equals(sensor)) {

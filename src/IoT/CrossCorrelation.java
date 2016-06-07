@@ -66,18 +66,116 @@ public class CrossCorrelation {
     }
 
     public static String findCitiesWithMaximumTrafficAndAirPollutantsEmitted() {
-        return "";
+        String value = "";
+        try {
+            String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airQualityTable");
+            String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airQualityTable (json STRING)");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_air_quality.json' INTO TABLE airQualityTable");
+
+            String ret4 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS trafficTable");
+            String ret5 = HiveQueryExecutor.executeQuery("CREATE TABLE trafficTable (json STRING)");
+            String ret6 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_traffic.json' INTO TABLE trafficTable");
+
+            value = HiveQueryExecutor.executeQuery("");
+            String[] tokens = value.split("<br/>");
+            float num = 0;
+            StringBuilder strbuilder = new StringBuilder();
+            for(int i = 0; i < tokens.length; i++){
+                strbuilder.append("<br/>");
+                String[] val = tokens[i].split(" ");
+                for(int j = 0; j < val.length; j++){
+                    strbuilder.append(" ");
+                    strbuilder.append(val[j]);
+                }
+            }
+        } catch (SQLException e) {
+            return e.getLocalizedMessage();
+        }
+        return value;
     }
 
     public static String findCitiesWithMaximumTrafficAndRelatePolutionHumidity() {
-        return "";
+        String value = "";
+        try {
+            String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airQualityTable");
+            String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airQualityTable (json STRING)");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_air_quality.json' INTO TABLE airQualityTable");
+
+            String ret4 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS trafficTable");
+            String ret5 = HiveQueryExecutor.executeQuery("CREATE TABLE trafficTable (json STRING)");
+            String ret6 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_traffic.json' INTO TABLE trafficTable");
+            value = HiveQueryExecutor.executeQuery("");
+            String[] tokens = value.split("<br/>");
+            float num = 0;
+            StringBuilder strbuilder = new StringBuilder();
+            for(int i = 0; i < tokens.length; i++){
+                strbuilder.append("<br/>");
+                String[] val = tokens[i].split(" ");
+                for(int j = 0; j < val.length; j++){
+                    strbuilder.append(" ");
+                    strbuilder.append(val[j]);
+                }
+            }
+        } catch (SQLException e) {
+            return e.getLocalizedMessage();
+        }
+        return value;
     }
 
     public static String findPollutantEmittedInMaximumNumberOfCities() {
-        return "";
+        String value = "";
+        try {
+            String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airQualityTable");
+            String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airQualityTable (json STRING)");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_air_quality.json' INTO TABLE airQualityTable");
+
+            String ret4 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS trafficTable");
+            String ret5 = HiveQueryExecutor.executeQuery("CREATE TABLE trafficTable (json STRING)");
+            String ret6 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_traffic.json' INTO TABLE trafficTable");
+            value = HiveQueryExecutor.executeQuery("");
+            String[] tokens = value.split("<br/>");
+            float num = 0;
+            StringBuilder strbuilder = new StringBuilder();
+            for(int i = 0; i < tokens.length; i++){
+                strbuilder.append("<br/>");
+                String[] val = tokens[i].split(" ");
+                for(int j = 0; j < val.length; j++){
+                    strbuilder.append(" ");
+                    strbuilder.append(val[j]);
+                }
+            }
+        } catch (SQLException e) {
+            return e.getLocalizedMessage();
+        }
+        return value;
     }
 
     public static String findMostCongestedCitiesAndRelateWithSeismicScale() {
-        return "";
+        String value = "";
+        try {
+            String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airQualityTable");
+            String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airQualityTable (json STRING)");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_air_quality.json' INTO TABLE airQualityTable");
+
+            String ret4 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS trafficTable");
+            String ret5 = HiveQueryExecutor.executeQuery("CREATE TABLE trafficTable (json STRING)");
+            String ret6 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_traffic.json' INTO TABLE trafficTable");
+
+            value = HiveQueryExecutor.executeQuery("");
+            String[] tokens = value.split("<br/>");
+            float num = 0;
+            StringBuilder strbuilder = new StringBuilder();
+            for(int i = 0; i < tokens.length; i++){
+                strbuilder.append("<br/>");
+                String[] val = tokens[i].split(" ");
+                for(int j = 0; j < val.length; j++){
+                    strbuilder.append(" ");
+                    strbuilder.append(val[j]);
+                }
+            }
+        } catch (SQLException e) {
+            return e.getLocalizedMessage();
+        }
+        return value;
     }
 }

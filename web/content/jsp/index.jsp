@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Cantarell" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-    <title>IoT Analytics using Hadoop and Hive</title>
+    <title>Blaze - IoT Analytics Engine using Hadoop and Hive</title>
 </head>
 <body style="background: #2F0B3A; color: white">
 <form method="post" action="login.jsp">

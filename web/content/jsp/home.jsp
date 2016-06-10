@@ -41,7 +41,7 @@ Welcome <%=session.getAttribute("userid")%>
 
 <div align="center">
     <h1> <img src="../html/images/logo.png" width="150px"/> <br/>
-        Blaze - An IoT Analytics framework</h1><br/><h2 style="font-family: Quicksand;">Using Hadoop and Hive</h2><br/>
+        Blaze - An IoT Analytics Engine</h1><br/><h2 style="font-family: Quicksand;">Using Hadoop and Hive</h2><br/>
 </div>
 
 
@@ -79,7 +79,6 @@ Welcome <%=session.getAttribute("userid")%>
                 </div>
                 <br/>
                 <input type="submit" class="submit-button" value="Go!">
-
                 <br/>
                 <hr/>
 

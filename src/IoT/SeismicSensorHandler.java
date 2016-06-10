@@ -59,27 +59,62 @@ public class SeismicSensorHandler {
     }
 
     public static String findMostActiveRegions() {
+        boolean failed = false;
+        FileWriter fileWriter = null;
         String value = "";
         try {
-            String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS seismicTable");
-            String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE seismicTable (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE seismicTable");
-            value = HiveQueryExecutor.executeQuery("SELECT get_json_object(seismicTable.json, \"$.location.lat\"), get_json_object(seismicTable.json, \"$.location.lon\"), get_json_object(seismicTable.json, \"$.value\"), get_json_object(seismicTable.json, \"$.location.state\"), get_json_object(seismicTable.json, \"$.location.street\") FROM seismicTable");
-            String[] tokens = value.split("<br/>");
-            float num = 0;
-            StringBuilder strbuilder = new StringBuilder();
-            for(int i = 0; i < tokens.length; i++){
-                strbuilder.append("<br/>");
-                String[] val = tokens[i].split(" ");
-                for(int j = 0; j < val.length; j++){
-                    strbuilder.append(" ");
-                    strbuilder.append(val[j]);
+            fileWriter = new FileWriter("/home/hadoop/IdeaProjects/Blaze-IoT-Analytics/web/content/CSV/seismicIntensity.csv");
+            fileWriter.append("name,val,lat,lon");
+            fileWriter.append("\n");
+            try {
+                String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS seismicTable");
+                String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE seismicTable (json STRING)");
+                String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE seismicTable");
+                value = HiveQueryExecutor.executeQuery("select mystate1, mycount, mylat, mylon, mycity from (SELECT count(*) as mycount, get_json_object(seismicTable.json, \"$.location.state\") as mystate1 from seismicTable Group By get_json_object(seismicTable.json, \"$.location.state\")) as temp1, (select get_json_object(seismicTable.json, \"$.location.lat\") as mylat, get_json_object(seismicTable.json, \"$.location.lon\") as mylon, get_json_object(seismicTable.json, \"$.location.state\") as mystate2, get_json_object(seismicTable.json, \"$.location.city\") as mycity from seismicTable) as temp2 where temp1.mystate1 = temp2.mystate2");
+                String[] tokens = value.split("<br/>");
+                float num = 0;
+
+                for(int i = 0; i < tokens.length; i++){
+                    String[] val = tokens[i].split(" ");
+                    if("null".equals(val[0])){
+                        continue;
+                    }
+                    fileWriter.append(val[4] + "   " + val[0]);
+
+
+                    num = Float.parseFloat(val[1]);
+                    fileWriter.append(",");
+                    num = num * 10000;
+                    fileWriter.append(String.valueOf(num));
+                    fileWriter.append(",");
+                    fileWriter.append(val[2]);
+                    fileWriter.append(",");
+                    fileWriter.append(val[3]);
+                    fileWriter.append("\n");
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                failed = true;
             }
-        } catch (SQLException e) {
-            return e.getLocalizedMessage();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            failed = true;
+        } finally {
+            try {
+                fileWriter.flush();
+                fileWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                failed = true;
+            }
+
+            if(failed){
+                return "";
+            }
         }
-        return value;
+        return "";
     }
 
     public static String findRegionsWithLargeTremors() {
@@ -87,8 +122,8 @@ public class SeismicSensorHandler {
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS seismicTable");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE seismicTable (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE seismicTable");
-            value = HiveQueryExecutor.executeQuery("SELECT get_json_object(seismicTable.json, \"$.location.lat\"), get_json_object(seismicTable.json, \"$.location.lon\"), get_json_object(seismicTable.json, \"$.value\"), get_json_object(seismicTable.json, \"$.location.state\"), get_json_object(seismicTable.json, \"$.location.street\") FROM seismicTable");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/srt/jsonfiles/file_seismic.json' INTO TABLE seismicTable");
+            value = HiveQueryExecutor.executeQuery("Select * from airpollution");
             String[] tokens = value.split("<br/>");
             float num = 0;
             StringBuilder strbuilder = new StringBuilder();

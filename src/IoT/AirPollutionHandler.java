@@ -58,14 +58,15 @@ public class AirPollutionHandler {
             boolean failed = false;
             FileWriter fileWriter = null;
             try {
-                fileWriter = new FileWriter("/home/hadoop/IdeaProjects/IoT Analytics/web/content/CSV/airPollution_2.csv");
+                fileWriter = new FileWriter("/home/hadoop/IdeaProjects/Blaze-IoT-Analytics/web/content/CSV/airPollution_2.csv");
                 fileWriter.append("pollutant,level");
                 fileWriter.append("\n");
                 try {
                     String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airQualityTable");
                     String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airQualityTable (json STRING)");
                     String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_air_quality.json' INTO TABLE airQualityTable");
-                    String value = HiveQueryExecutor.executeQuery("SELECT get_json_object(airQualityTable.json, \"$.pollutants.value\"), get_json_object(airQualityTable.json, \"$.date\") FROM airQualityTable");
+                    String value = HiveQueryExecutor.executeQuery("SELECT get_json_object(airQualityTable.json, \"$.pollutants.pol\"), sum(get_json_object(airQualityTable.json, \"$.pollutants.value\")) FROM airQualityTable Group by get_json_object(airQualityTable.json, \"$.pollutants.pol\")");
+
                     String[] tokens = value.split("<br/>");
                     for(int i = 0; i < tokens.length; i++){
                         String[] val = tokens[i].split(" ");

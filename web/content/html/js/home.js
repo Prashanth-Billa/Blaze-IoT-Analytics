@@ -37,7 +37,7 @@ function showSensorActions(){
 
     }else if("seismic" == value){
 
-        var actions = ["Which regions are active", "Which regions have large tremors", "Which regions have large duration for tremors", "What is the crossover between above three cases"];
+        var actions = ["Show the regions with their intensities", "Find most active regions", "Which regions have large tremors", "Which regions have large duration for tremors", "What is the crossover between above three cases"];
         populateSensorActionsList(actions);
 
     }else if("humidity" == value){
@@ -47,17 +47,17 @@ function showSensorActions(){
 
     }else if("air-pollution" == value){
 
-        var actions = ["a1", "a2", "a3", "a4"];
+        var actions = ["Show Air Pollution Levels in 2006 and 2009", "Show the overall levels of pollutants", "Find top cities with highest pollutants", "Find maximum emitted pollutant"];
         populateSensorActionsList(actions);
 
     }else if("traffic" == value){
 
-        var actions = ["b1", "b2", "b3", "b4"];
+        var actions = ["Find most congested cities", "Find congestion level in a city", "Find Peak Congestion Time"];
         populateSensorActionsList(actions);
 
     }else if("cross-correlation" == value){
 
-        var actions = ["c1", "c2", "c3", "c4"];
+        var actions = ["Find Air Quality with traffic in a specific city", "Find cities with reason for air pollution being traffic", "Find most congested cities and relate with seismic scale"];
         populateSensorActionsList(actions);
 
     }else{

@@ -109,18 +109,18 @@ Welcome <%=session.getAttribute("userid")%>
                         out.println("</html>");
                     }
                 %>
-                <%@ page import="IoT.HiveQueryExecutor" %>
+                <%@ page import="IoT.HiveAdvancedQueryExecutor" %>
                 <%@ page import="java.sql.*" %>
                 <%
                     String temp = hiveQuery;
                     if(hiveQuery != "" && hiveQuery != null){
                         hiveQuery = hiveQuery.replaceAll(";", " ");
                         //uploadedPath
-                        String ret1 = IoT.HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS queryTable");
-                        String ret2 = IoT.HiveQueryExecutor.executeQuery("CREATE TABLE queryTable (json STRING)");
-                        String ret3 = IoT.HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + uploadedPath + "' INTO TABLE queryTable");
+                        String ret1 = IoT.HiveAdvancedQueryExecutor.executeQuery("DROP TABLE IF EXISTS queryTable");
+                        String ret2 = IoT.HiveAdvancedQueryExecutor.executeQuery("CREATE TABLE queryTable (json STRING)");
+                        String ret3 = IoT.HiveAdvancedQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + uploadedPath + "' INTO TABLE queryTable");
                         try{
-                            String returnedValue = IoT.HiveQueryExecutor.executeQuery(hiveQuery);
+                            String returnedValue = IoT.HiveAdvancedQueryExecutor.executeQuery(hiveQuery);
                             out.println("<span style='color:green'>Query Successfully submitted: </span><span style='color:blue'>" + temp + "</span><br/>");
                             out.println("<div align='left'><span style='color:green'><br/><br/>Output: <br/><br/><br/><b>" + returnedValue + "</b></div>");
                             Class.forName("com.mysql.jdbc.Driver");
@@ -133,8 +133,8 @@ Welcome <%=session.getAttribute("userid")%>
                                 out.println("<br/><br/><span style='color:red'>Result not entered into database</span><br/>");
                             }
 
-                            Process mapReduceLogProcess = Runtime.getRuntime().exec("python /home/hadoop/IdeaProjects/IoT Analytics/web/content/YSmart/translate.py TEMP/test.sql TEMP/s.schema");
-                            mapReduceLogProcess.waitFor();
+//                            Process mapReduceLogProcess = Runtime.getRuntime().exec("python /home/hadoop/IdeaProjects/IoT Analytics/web/content/YSmart/translate.py TEMP/test.sql TEMP/s.schema");
+//                            mapReduceLogProcess.waitFor();
 
                         }catch(Exception ex){
                             out.println("<span style='color:red'>Submit a valid query / file" + ex.getLocalizedMessage());

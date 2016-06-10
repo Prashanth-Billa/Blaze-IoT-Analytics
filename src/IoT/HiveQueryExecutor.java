@@ -16,12 +16,13 @@ public class HiveQueryExecutor {
         Connection con = null;
         Statement stmt = null;
         try{
-            con = DriverManager.getConnection("jdbc:hive2://localhost:10000/default", "hadoop", "");
+//            con = DriverManager.getConnection("jdbc:hive2://localhost:10000/default", "hadoop", "");
+            con = DriverManager.getConnection("jdbc:hive2://blazeIOT.azurehdinsight.net:443/default;ssl=true?hive.server2.transport.mode=http;hive.server2.thrift.http.path=/hive2", "blazeIOT", "January@2016");
             stmt = con.createStatement();
         }catch(SQLException e){
-            return "Please check the Connection to HDFS and Hive. Please validate the query.";
+            return "Please check the Connection to HDFS and Hive. Please validate the query." + e.getLocalizedMessage();
         } catch(Exception e){
-            return  "Please check the Connection to HDFS and Hive. Please validate the query.";
+            return  "Please check the Connection to HDFS and Hive. Please validate the query." + e.getLocalizedMessage();
         }
 
         ResultSet res = null;
@@ -36,8 +37,14 @@ public class HiveQueryExecutor {
             resMeta = res.getMetaData();
             while (res.next()) {
                 for (int i = 1; i <= resMeta.getColumnCount(); i++) {
-                    str.append(res.getString(i));
-                    str.append(" ");
+                    int type = resMeta.getColumnType(i);
+                    if (type == Types.VARCHAR || type == Types.CHAR) {
+                        str.append(res.getString(i));
+                        str.append(" ");
+                    } else {
+                        str.append(String.valueOf(res.getLong(i)));
+                        str.append(" ");
+                    }
                 }
                 str.append("<br/>");
             }

@@ -10,69 +10,74 @@ function getUrlVars() {
 var sensorType = getUrlVars()['sensorType'];
 var sensorAction = getUrlVars()['sensor-action-value'];
 if("seismic" == sensorType){
-    Plotly.d3.csv('./../CSV/seismicIntensity.csv', function(err, rows){
-        function unpack(rows, key) {
-            return rows.map(function(row) { return row[key]; });
-        }
-        var cityName = unpack(rows, 'name'),
-            intensity = unpack(rows, 'val'),
-            cityLat = unpack(rows, 'lat'),
-            cityLon = unpack(rows, 'lon'),
-            color = [,"rgb(255,65,54)","rgb(133,20,75)","rgb(255,133,27)","lightgrey"],
-            citySize = [],
-            hoverText = [],
-            scale = 50000;
-
-        for ( var i = 0 ; i < intensity.length; i++) {
-            var currentSize = intensity[i] / scale;
-            var currentText = cityName[i] + "<br>Intensity: " + intensity[i];
-            citySize.push(currentSize);
-            hoverText.push(currentText);
-        }
-
-        var data = [{
-            type: 'scattergeo',
-            locationmode: 'USA-states',
-            lat: cityLat,
-            lon: cityLon,
-            text: hoverText,
-            hoverinfo: 'text',
-            marker: {
-                size: citySize,
-                line: {
-                    color: 'black',
-                    width: 2
-                },
-
+    if("0" == sensorAction || "1" == sensorAction){
+        Plotly.d3.csv('./../CSV/seismicIntensity.csv', function(err, rows){
+            function unpack(rows, key) {
+                return rows.map(function(row) { return row[key]; });
             }
-        }];
+            var cityName = unpack(rows, 'name'),
+                intensity = unpack(rows, 'val'),
+                cityLat = unpack(rows, 'lat'),
+                cityLon = unpack(rows, 'lon'),
+                color = [,"rgb(255,65,54)","rgb(133,20,75)","rgb(255,133,27)","lightgrey"],
+                citySize = [],
+                hoverText = [],
+                scale = 20000;
 
-        var layout = {
-            title: 'Seismic Sensor Plot',
-            showlegend: false,
-            geo: {
-                scope: 'usa',
-                projection: {
-                    type: 'albers usa'
+            for ( var i = 0 ; i < intensity.length; i++) {
+                var currentSize = intensity[i] / scale;
+                var currentText = cityName[i] + "<br>Intensity: " + intensity[i];
+                citySize.push(currentSize);
+                hoverText.push(currentText);
+            }
+
+            var data = [{
+                type: 'scattergeo',
+                locationmode: 'USA-states',
+                lat: cityLat,
+                lon: cityLon,
+                text: hoverText,
+                hoverinfo: 'text',
+                marker: {
+                    size: citySize,
+                    line: {
+                        color: 'black',
+                        width: 2
+                    },
+
+                }
+            }];
+
+            var layout = {
+                title: 'Seismic Sensor Plot',
+                width: 1300,
+                height: 1300,
+                showlegend: false,
+                geo: {
+                    scope: 'usa',
+                    projection: {
+                        type: 'albers usa'
+                    },
+                    showland: true,
+                    landcolor: 'rgb(217, 217, 217)',
+                    subunitwidth: 1,
+                    countrywidth: 1,
+                    showrivers: true,
+                    showlakes: true,
+                    showsubunits: true,
+                    subunitcolor: 'rgb(255,255,255)',
+                    countrycolor: 'rgb(255,255,255)'
                 },
-                showland: true,
-                landcolor: 'rgb(217, 217, 217)',
-                subunitwidth: 1,
-                countrywidth: 1,
-                subunitcolor: 'rgb(255,255,255)',
-                countrycolor: 'rgb(255,255,255)'
-            },
-        };
+            };
 
-        Plotly.plot(myDiv, data, layout, {showLink: false});
-    });
+            Plotly.plot(myDiv, data, layout, {showLink: false});
+        });
+    }
 }else if("humidity" == sensorType){
-    alert("humidity");
 }else if("fall-detection" == sensorType){
-    alert("fall-detection");
 }else if("air-pollution" == sensorType){
 
-    if(sensorAction == 0){
+    if(sensorAction == "0"){
         var margin = {top: 20, right: 20, bottom: 70, left: 40},
             width = 600 - margin.left - margin.right,
             height = 300 - margin.top - margin.bottom;
@@ -93,8 +98,8 @@ if("seismic" == sensorType){
             .ticks(10);
 
         var svg = d3.select("#tab-1").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+            .attr("width", 1000)
+            .attr("height", 1000)
             .append("g")
             .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
@@ -139,7 +144,7 @@ if("seismic" == sensorType){
                 .attr("height", function(d) { return height - y(d.value); });
 
         });
-    }else if(sensorAction == 1){
+    }else if(sensorAction == "1"){
         var width = 960,
             height = 500,
             radius = Math.min(width, height) / 2;
@@ -154,7 +159,7 @@ if("seismic" == sensorType){
         var pie = d3.layout.pie()
             .sort(null)
             .value(function(d) { return d.level; });
-        var svg = d3.select("body").append("svg")
+        var svg = d3.select("#tab-1").append("svg")
             .attr("width", width)
             .attr("height", height)
             .append("g")
@@ -171,7 +176,7 @@ if("seismic" == sensorType){
             g.append("text")
                 .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
                 .attr("dy", ".35em")
-                .text(function(d) { return d.data.pollutant; });
+                .text(function(d) { return d.data.pollutant + " (" + d.data.level + " mg/m^3)"; });
         });
         function type(d) {
             d.level = +d.level;

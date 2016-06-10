@@ -483,6 +483,8 @@ $(function(){
 
 	var airPollutionJson = {"prio_value": 2, "prio_class": "High", "time": "11:37:48", "date": "2009-12-11", "pollutants": {"averaging": {"units": "hours", "time": 1}, "pol": "CO2", "value": 14.1585, "unit": "mg/m^3", "time": "11:37:48"}, "id": 1, "location": {"city": "Portland", "country": "US", "lon": -86.4047, "state": "TN", "street": "South Martin Road", "lat": 36.5735}}
 
+	var trafficJson = {}
+
 	if(sensorType == "fall-detection"){
 		$('#inputJSON').val(JSON.stringify(fallDetectionJson));
 		visualize(fallDetectionJson);
@@ -505,6 +507,7 @@ $(function(){
 	$('#btnVisualize').click(function() {
 
 		var json_string = $('#inputJSON').val();
+		alert(json_string);
 
 		try
 		{

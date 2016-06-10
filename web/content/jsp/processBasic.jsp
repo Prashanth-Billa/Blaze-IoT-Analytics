@@ -38,7 +38,7 @@ Welcome <%=session.getAttribute("userid")%>
         </ul>
         <div class="tab">
             <div id="tab-1" style="width:1000px" class="tab-content">
-                <div id="myDiv"></div>
+
                 <%@ page import="java.sql.*" %>
                 <%@ page import="java.io.FileWriter" %>
                 <%@ page import="java.io.IOException" %>
@@ -55,11 +55,14 @@ Welcome <%=session.getAttribute("userid")%>
                             if(returnValue < 0){
                                 out.println("Error in generating graph as the data file could not be generated");
                             }
+                            out.println(" <div id=\"myDiv\"></div>");
+                            out.println("<script src=\"../html/js/graphPlotHelper.js\"></script>");
                         }
 
                         if("1".equals(sensorAction)){
                             output = IoT.SeismicSensorHandler.findMostActiveRegions();
-                            out.println(output);
+                            out.println(" <div id=\"myDiv\"></div>");
+                            out.println("<script src=\"../html/js/graphPlotHelper.js\"></script>");
                         }
 
                         if("2".equals(sensorAction)){
@@ -81,18 +84,26 @@ Welcome <%=session.getAttribute("userid")%>
                     }else if("air-pollution".equals(sensor)) {
                         if ("0".equals(sensorAction)) {
                             returnValue = IoT.AirPollutionHandler.findPollutantsLevelInSpecificDuration();
+
                             if (returnValue < 0) {
                                 out.println("Error in generating graph as the data file could not be generated");
                             }
+                            out.println("<script src=\"../html/js/graphPlotHelper.js\"></script>");
                         }
 
                         if("1".equals(sensorAction)){
-                            output = IoT.AirPollutionHandler.findTopCitiesWithHighestPollutants();
-                            out.println(output);
+                            returnValue = IoT.AirPollutionHandler.findPollutantTypePercentage();
+
+                            if (returnValue < 0) {
+                                out.println("Error in generating graph as the data file could not be generated");
+                            }
+                            out.println("<h2>Percentages of pollutants overall - in USA</h2><br/><br/>");
+                            out.println("<script src=\"../html/js/graphPlotHelper.js\"></script>");
                         }
 
                         if("2".equals(sensorAction)){
-                            output = IoT.AirPollutionHandler.findCityWithMaximumNumberOfPollutants();
+                            output = IoT.AirPollutionHandler.findTopCitiesWithHighestPollutants();
+                            out.println("Return value : " + returnValue);
                             out.println(output);
                         }
 
@@ -140,6 +151,7 @@ Welcome <%=session.getAttribute("userid")%>
                             if (returnValue < 0) {
                                 out.println("Error in generating graph as the data file could not be generated");
                             }
+                            out.println("<script src=\"../html/js/graphPlotHelper.js\"></script>");
                         }
 
                         if("1".equals(sensorAction)){
@@ -153,14 +165,16 @@ Welcome <%=session.getAttribute("userid")%>
                         }
 
                         if("3".equals(sensorAction)){
-                            output = CrossCorrelation.findPollutantEmittedInMaximumNumberOfCities();
+                            output = CrossCorrelation.findMostCongestedCitiesAndRelateWithSeismicScale();
                             out.println(output);
                         }
 
                         if("4".equals(sensorAction)){
-                            output = CrossCorrelation.findMostCongestedCitiesAndRelateWithSeismicScale();
+                            output = CrossCorrelation.findPollutantEmittedInMaximumNumberOfCities();
                             out.println(output);
                         }
+
+
                     }else if("fall-detection".equals(sensor)){
                         if("0".equals(sensorAction)){
                             output = FallDetectionSensorHandler.findFallsHappenningInGivenRegion();
@@ -179,7 +193,7 @@ Welcome <%=session.getAttribute("userid")%>
                     }
 
                 %>
-                <script src="../html/js/graphPlotHelper.js"></script>
+
             </div>
             <div id="tab-2" class="tab-content">
                     <textarea id='inputJSON' type='text' style='width:100%;height:150px;margin-bottom:10px;display: none'>

@@ -60,7 +60,7 @@ Welcome <%=session.getAttribute("userid")%>
                         }
 
                         if("1".equals(sensorAction)){
-                            output = IoT.SeismicSensorHandler.findMostActiveRegions();
+//                            output = IoT.SeismicSensorHandler.findMostActiveRegions();
                             out.println(" <div id=\"myDiv\"></div>");
                             out.println("<script src=\"../html/js/graphPlotHelper.js\"></script>");
                         }

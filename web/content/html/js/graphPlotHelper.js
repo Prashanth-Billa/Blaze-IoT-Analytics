@@ -22,7 +22,7 @@ if("seismic" == sensorType){
                 color = [,"rgb(255,65,54)","rgb(133,20,75)","rgb(255,133,27)","lightgrey"],
                 citySize = [],
                 hoverText = [],
-                scale = 20000;
+                scale = 7000000;
 
             for ( var i = 0 ; i < intensity.length; i++) {
                 var currentSize = intensity[i] / scale;

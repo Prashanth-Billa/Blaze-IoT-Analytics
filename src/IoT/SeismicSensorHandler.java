@@ -72,7 +72,7 @@ public class SeismicSensorHandler {
                 String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS seismicTable");
                 String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE seismicTable (json STRING)");
                 String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileSeismicJson + "' INTO TABLE seismicTable");
-                value = HiveQueryExecutor.executeQuery("select mystate1, mycount, mylat, mylon, mycity from (SELECT count(*) as mycount, get_json_object(seismicTable.json, \"$.location.state\") as mystate1 from seismicTable Group By get_json_object(seismicTable.json, \"$.location.state\")) as temp1, (select get_json_object(seismicTable.json, \"$.location.lat\") as mylat, get_json_object(seismicTable.json, \"$.location.lon\") as mylon, get_json_object(seismicTable.json, \"$.location.state\") as mystate2, get_json_object(seismicTable.json, \"$.location.city\") as mycity from seismicTable) as temp2 where temp1.mystate1 = temp2.mystate2");
+                value = HiveQueryExecutor.executeQuery("select mystate1, mycount, mylat, mylon, mycity from (SELECT count(*) as mycount, get_json_object(seismicTable.json, \"$.location.state\") as mystate1 from seismicTable Group By get_json_object(seismicTable.json, \"$.location.state\")) as temp1, (select get_json_object(seismicTable.json, \"$.location.lat\") as mylat, get_json_object(seismicTable.json, \"$.location.lon\") as mylon, get_json_object(seismicTable.json, \"$.location.state\") as mystate2, get_json_object(seismicTable.json, \"$.location.city\") as mycity from seismicTable) as temp2 where temp1.mystate1 = temp2.mystate2 limit 1000");
                 String[] tokens = value.split("<br/>");
                 float num = 0;
 

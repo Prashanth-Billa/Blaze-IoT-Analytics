@@ -140,7 +140,6 @@ Welcome <%=session.getAttribute("userid")%>
                     String temp = hiveQuery;
                     if(hiveQuery != "" && hiveQuery != null){
                         hiveQuery = hiveQuery.replaceAll(";", " ");
-                        //uploadedPath
                         String ret1 = IoT.HiveAdvancedQueryExecutor.executeQuery("DROP TABLE IF EXISTS customTable");
                         String ret2 = IoT.HiveAdvancedQueryExecutor.executeQuery("CREATE TABLE customTable (json STRING)");
                         String ret3 = IoT.HiveAdvancedQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/srt/uploads/" + fileName + "' INTO TABLE customTable");

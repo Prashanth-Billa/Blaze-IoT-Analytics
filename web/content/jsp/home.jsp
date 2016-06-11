@@ -133,8 +133,8 @@ Welcome <%=session.getAttribute("userid")%>
             <%
                 try{
                     String returnedValue = IoT.HiveQueryExecutor.executeQuery("show tables");
-                    if("Please check the Connection to HDFS and Hive".equals(returnedValue) || "Please check the Connection to HDFS and Hive. Please validate the query.".equals(returnedValue)){
-                        out.println("<span style='color:red; font-weight: bold'>The environment is not setup. </span>");
+                    if(returnedValue.contains("Please check the Connection")){
+                        out.println("<span style='color:red; font-weight: bold'>The Azure Hadoop environment is not setup. </span>");
                         out.println("<br/><br/><span style='color:red; font-weight: bold'>Execute ./start-dfs.sh in $HADOOP_HOME/sbin </span>");
                         out.println("<br/><br/><span style='color:red; font-weight: bold'>Execute ./start-yarn.sh in $HADOOP_HOME/sbin</span>");
                         out.println("<br/><br/><span style='color:red; font-weight: bold'>Execute 'hive --service hiveserver2'</span>");

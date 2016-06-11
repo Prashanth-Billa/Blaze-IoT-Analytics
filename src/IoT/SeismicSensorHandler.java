@@ -6,6 +6,8 @@ import java.sql.SQLException;
 
 public class SeismicSensorHandler {
 
+    private static String fileSeismicJson = "/home/srt/JSON/file_seismic.json";
+
     public static int generateMapWithSeismicIntensities(){
         boolean failed = false;
         FileWriter fileWriter = null;
@@ -16,7 +18,7 @@ public class SeismicSensorHandler {
                 try {
                     String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS seismicTable");
                     String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE seismicTable (json STRING)");
-                    String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE seismicTable");
+                    String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileSeismicJson + "' INTO TABLE seismicTable");
                     String value = HiveQueryExecutor.executeQuery("SELECT get_json_object(seismicTable.json, \"$.location.lat\"), get_json_object(seismicTable.json, \"$.location.lon\"), get_json_object(seismicTable.json, \"$.value\"), get_json_object(seismicTable.json, \"$.location.state\"), get_json_object(seismicTable.json, \"$.location.street\") FROM seismicTable");
                     String[] tokens = value.split("<br/>");
                     float num = 0;
@@ -69,7 +71,7 @@ public class SeismicSensorHandler {
             try {
                 String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS seismicTable");
                 String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE seismicTable (json STRING)");
-                String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE seismicTable");
+                String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileSeismicJson + "' INTO TABLE seismicTable");
                 value = HiveQueryExecutor.executeQuery("select mystate1, mycount, mylat, mylon, mycity from (SELECT count(*) as mycount, get_json_object(seismicTable.json, \"$.location.state\") as mystate1 from seismicTable Group By get_json_object(seismicTable.json, \"$.location.state\")) as temp1, (select get_json_object(seismicTable.json, \"$.location.lat\") as mylat, get_json_object(seismicTable.json, \"$.location.lon\") as mylon, get_json_object(seismicTable.json, \"$.location.state\") as mystate2, get_json_object(seismicTable.json, \"$.location.city\") as mycity from seismicTable) as temp2 where temp1.mystate1 = temp2.mystate2");
                 String[] tokens = value.split("<br/>");
                 float num = 0;
@@ -122,7 +124,7 @@ public class SeismicSensorHandler {
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS seismicTable");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE seismicTable (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/srt/jsonfiles/file_seismic.json' INTO TABLE seismicTable");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileSeismicJson + "' INTO TABLE seismicTable");
             value = HiveQueryExecutor.executeQuery("Select * from airpollution");
             String[] tokens = value.split("<br/>");
             float num = 0;
@@ -146,7 +148,7 @@ public class SeismicSensorHandler {
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS seismicTable");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE seismicTable (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE seismicTable");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileSeismicJson + "' INTO TABLE seismicTable");
             value = HiveQueryExecutor.executeQuery("SELECT get_json_object(seismicTable.json, \"$.location.lat\"), get_json_object(seismicTable.json, \"$.location.lon\"), get_json_object(seismicTable.json, \"$.value\"), get_json_object(seismicTable.json, \"$.location.state\"), get_json_object(seismicTable.json, \"$.location.street\") FROM seismicTable");
             String[] tokens = value.split("<br/>");
             float num = 0;
@@ -170,7 +172,7 @@ public class SeismicSensorHandler {
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS seismicTable");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE seismicTable (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE seismicTable");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileSeismicJson + "' INTO TABLE seismicTable");
             value = HiveQueryExecutor.executeQuery("SELECT get_json_object(seismicTable.json, \"$.location.lat\"), get_json_object(seismicTable.json, \"$.location.lon\"), get_json_object(seismicTable.json, \"$.value\"), get_json_object(seismicTable.json, \"$.location.state\"), get_json_object(seismicTable.json, \"$.location.street\") FROM seismicTable");
             String[] tokens = value.split("<br/>");
             float num = 0;

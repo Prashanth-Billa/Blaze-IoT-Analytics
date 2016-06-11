@@ -3,13 +3,14 @@ package IoT;
 import java.sql.SQLException;
 
 public class FallDetectionSensorHandler {
+    private static String fileFallDetectionJson = "/home/srt/JSON/file_fallDetection.json";
     public static String findFallsHappenningInGivenRegion() {
 
         String value = "";
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS fallDetectorTable");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE fallDetectorTable (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE fallDetectorTable");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileFallDetectionJson + "' INTO TABLE fallDetectorTable");
             value = HiveQueryExecutor.executeQuery("");
             String[] tokens = value.split("<br/>");
             float num = 0;
@@ -34,7 +35,7 @@ public class FallDetectionSensorHandler {
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS fallDetectorTable");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE fallDetectorTable (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE fallDetectorTable");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileFallDetectionJson + "' INTO TABLE fallDetectorTable");
             value = HiveQueryExecutor.executeQuery("");
             String[] tokens = value.split("<br/>");
             float num = 0;
@@ -58,7 +59,7 @@ public class FallDetectionSensorHandler {
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS fallDetectorTable");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE fallDetectorTable (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE fallDetectorTable");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileFallDetectionJson + "' INTO TABLE fallDetectorTable");
             value = HiveQueryExecutor.executeQuery("");
             String[] tokens = value.split("<br/>");
             float num = 0;

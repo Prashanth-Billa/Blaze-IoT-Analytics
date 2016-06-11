@@ -91,7 +91,7 @@ Welcome <%=session.getAttribute("userid")%>
                 <input type="file" name="file" size="50" /><br/><br/>
                 <hr/>
                 <p><b>Enter the Hive Query Below: </b></p><br/>
-                <textarea id="query-area" rows="20" cols="20" name="user_query"></textarea>
+                <textarea placeholder="The table name would be 'customTable'"  id="query-area" rows="20" cols="20" name="user_query"></textarea>
                 <br/><br/><br/>
                 <input type="submit" class="submit-button"  value="Go!">
             </form>

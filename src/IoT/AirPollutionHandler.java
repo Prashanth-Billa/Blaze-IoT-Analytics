@@ -6,6 +6,8 @@ import java.sql.SQLException;
 
 public class AirPollutionHandler {
 
+    private static String fileAirPollutionJson = "/home/srt/JSON/file_airPollution.json";
+
     public static int findPollutantsLevelInSpecificDuration(){
         boolean failed = false;
         FileWriter fileWriter = null;
@@ -16,7 +18,7 @@ public class AirPollutionHandler {
                 try {
                     String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airQualityTable");
                     String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airQualityTable (json STRING)");
-                    String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_air_quality.json' INTO TABLE airQualityTable");
+                    String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileAirPollutionJson + "' INTO TABLE airQualityTable");
                     String value = HiveQueryExecutor.executeQuery("SELECT get_json_object(airQualityTable.json, \"$.pollutants.value\"), get_json_object(airQualityTable.json, \"$.date\") FROM airQualityTable");
                     String[] tokens = value.split("<br/>");
                     for(int i = 0; i < tokens.length; i++){
@@ -64,7 +66,7 @@ public class AirPollutionHandler {
                 try {
                     String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airQualityTable");
                     String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airQualityTable (json STRING)");
-                    String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_air_quality.json' INTO TABLE airQualityTable");
+                    String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileAirPollutionJson + "' INTO TABLE airQualityTable");
                     String value = HiveQueryExecutor.executeQuery("SELECT get_json_object(airQualityTable.json, \"$.pollutants.pol\"), sum(get_json_object(airQualityTable.json, \"$.pollutants.value\")) FROM airQualityTable Group by get_json_object(airQualityTable.json, \"$.pollutants.pol\")");
 
                     String[] tokens = value.split("<br/>");
@@ -108,7 +110,7 @@ public class AirPollutionHandler {
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airPollution");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airPollution (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE airPollution");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileAirPollutionJson + "' INTO TABLE airQualityTable");
             value = HiveQueryExecutor.executeQuery("");
             String[] tokens = value.split("<br/>");
             float num = 0;
@@ -132,7 +134,7 @@ public class AirPollutionHandler {
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airPollution");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airPollution (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE airPollution");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileAirPollutionJson + "' INTO TABLE airQualityTable");
             value = HiveQueryExecutor.executeQuery("");
             String[] tokens = value.split("<br/>");
             float num = 0;
@@ -156,7 +158,7 @@ public class AirPollutionHandler {
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airPollution");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airPollution (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE airPollution");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileAirPollutionJson + "' INTO TABLE airQualityTable");
             value = HiveQueryExecutor.executeQuery("");
             String[] tokens = value.split("<br/>");
             float num = 0;

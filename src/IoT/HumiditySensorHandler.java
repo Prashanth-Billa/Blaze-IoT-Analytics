@@ -7,12 +7,14 @@ public class HumiditySensorHandler {
         return 0;
     }
 
+    private static String fileHumidityJson = "/home/srt/JSON/file_humidity.json";
+
     public static String findOverallEventRate() {
         String value = "";
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS humidityTable");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE humidityTable (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE humidityTable");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileHumidityJson + "' INTO TABLE humidityTable");
             value = HiveQueryExecutor.executeQuery("");
             String[] tokens = value.split("<br/>");
             float num = 0;
@@ -34,9 +36,9 @@ public class HumiditySensorHandler {
     public static String findFrequencyOfSprinkleronEvent() {
         String value = "";
         try {
-            String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS seismicTable");
-            String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE seismicTable (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE seismicTable");
+            String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS humidityTable");
+            String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE humidityTable (json STRING)");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileHumidityJson + "' INTO TABLE humidityTable");
             value = HiveQueryExecutor.executeQuery("");
             String[] tokens = value.split("<br/>");
             float num = 0;
@@ -58,9 +60,9 @@ public class HumiditySensorHandler {
     public static String findNumberOfHighPriorityClassEvents() {
         String value = "";
         try {
-            String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS seismicTable");
-            String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE seismicTable (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE seismicTable");
+            String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS humidityTable");
+            String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE humidityTable (json STRING)");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileHumidityJson + "' INTO TABLE humidityTable");
             value = HiveQueryExecutor.executeQuery("");
             String[] tokens = value.split("<br/>");
             float num = 0;

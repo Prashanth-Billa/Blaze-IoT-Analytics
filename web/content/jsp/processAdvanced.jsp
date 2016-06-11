@@ -17,7 +17,10 @@ Welcome <%=session.getAttribute("userid")%>
 <%@ page import="org.apache.commons.fileupload.disk.*" %>
 <%@ page import="org.apache.commons.fileupload.servlet.*" %>
 <%@ page import="org.apache.commons.io.output.*" %>
+<%@ page import="com.jcraft.jsch.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+
 <html>
 <head>
     <title>Results</title>
@@ -41,13 +44,23 @@ Welcome <%=session.getAttribute("userid")%>
         <div class="tab">
             <div id="tab-1" class="tab-content">
                 <%
+                    String SFTPHOST = "blazeIOT-ssh.azurehdinsight.net";
+                    int    SFTPPORT = 22;
+                    String SFTPUSER = "srt";
+                    String SFTPPASS = "January@2016";
+                    String SFTPWORKINGDIR = "/home/srt/uploads/";
+
+                    Session     sess     = null;
+                    Channel     channel     = null;
+                    ChannelSftp channelSftp = null;
+
                     File file ;
                     String jsonSensorDataLine = "";
                     String hiveQuery = "";
                     int fileSizeAllowed = 20000 * 1024;
                     String fileName = "";
+                    String filePath = "";
                     int maxMemSize = 20000 * 1024;
-                    String filePath = "/home/hadoop/uploads";
                     String uploadedPath = "";
                     String contentType = request.getContentType();
                     if (contentType != "" && contentType != null && (contentType.indexOf("multipart/form-data") >= 0)) {
@@ -68,22 +81,34 @@ Welcome <%=session.getAttribute("userid")%>
                             {
                                 FileItem fi = (FileItem)i.next();
                                 if ( !fi.isFormField () )  {
+
                                     String fieldName = fi.getFieldName();
                                     fileName = fi.getName();
                                     boolean isInMemory = fi.isInMemory();
                                     long sizeInBytes = fi.getSize();
-                                    file = new File( filePath + "/" + fileName) ;
-                                    fi.write( file ) ;
-                                    out.println("<span style='color:green'>Uploaded File: </span><span style='color:blue'>" + filePath + "/" + fileName + "</span><br>");
-                                    uploadedPath = filePath + "/" + fileName;
-                                    BufferedReader bufferedreaderJson = new BufferedReader(new FileReader(uploadedPath));
-                                    String firstLine = bufferedreaderJson.readLine();
-                                    if(firstLine == null){
-                                        out.println("<span style='color:red'>File is empty</span>");
-                                    }else{
-                                        firstLine = firstLine.substring(0, firstLine.lastIndexOf(","));
-                                        out.println("<script>document.getElementById('inputAdvancedJSON').value = " + firstLine + "; var fallDetectionjson = " + firstLine + "; $('#inputAdvancedJSON').val(JSON.stringify(fallDetectionjson));  visualize(fallDetectionjson);</script>");
+                                    try
+                                    {
+                                        JSch jsch = new JSch();
+                                        sess = jsch.getSession(SFTPUSER,SFTPHOST,SFTPPORT);
+                                        sess.setPassword(SFTPPASS);
+                                        java.util.Properties conf = new java.util.Properties();
+                                        conf.put("StrictHostKeyChecking", "no");
+                                        sess.setConfig(conf);
+                                        sess.connect();
+                                        channel = sess.openChannel("sftp");
+                                        channel.connect();
+                                        channelSftp = (ChannelSftp)channel;
+                                        channelSftp.cd(SFTPWORKINGDIR);
+                                        File f = new File("/home/hadoop/Desktop/" + fileName);
+                                        channelSftp.put(new FileInputStream(f), f.getName());
                                     }
+                                    catch (Exception e)
+                                    {
+                                        out.println("<span style='color:red'>File Not Attached : " + e.getLocalizedMessage() + "</span>");
+                                    }
+
+                                    out.println("<span style='color:green'>Uploaded File into Azure: </span><span style='color:blue'>" + fileName + "</span><br>");
+
                                     fileThere = true;
                                 }
                                 if (fi.isFormField()) {
@@ -116,9 +141,9 @@ Welcome <%=session.getAttribute("userid")%>
                     if(hiveQuery != "" && hiveQuery != null){
                         hiveQuery = hiveQuery.replaceAll(";", " ");
                         //uploadedPath
-                        String ret1 = IoT.HiveAdvancedQueryExecutor.executeQuery("DROP TABLE IF EXISTS queryTable");
-                        String ret2 = IoT.HiveAdvancedQueryExecutor.executeQuery("CREATE TABLE queryTable (json STRING)");
-                        String ret3 = IoT.HiveAdvancedQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + uploadedPath + "' INTO TABLE queryTable");
+                        String ret1 = IoT.HiveAdvancedQueryExecutor.executeQuery("DROP TABLE IF EXISTS customTable");
+                        String ret2 = IoT.HiveAdvancedQueryExecutor.executeQuery("CREATE TABLE customTable (json STRING)");
+                        String ret3 = IoT.HiveAdvancedQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/srt/uploads/" + fileName + "' INTO TABLE customTable");
                         try{
                             String returnedValue = IoT.HiveAdvancedQueryExecutor.executeQuery(hiveQuery);
                             out.println("<span style='color:green'>Query Successfully submitted: </span><span style='color:blue'>" + temp + "</span><br/>");

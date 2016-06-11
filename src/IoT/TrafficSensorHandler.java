@@ -3,6 +3,7 @@ package IoT;
 import java.sql.SQLException;
 
 public class TrafficSensorHandler {
+    private static String fileTrafficJson = "/home/srt/JSON/file_traffic.json";
     public static int findMostCongestedCities() {
         return 0;
     }
@@ -12,7 +13,7 @@ public class TrafficSensorHandler {
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS trafficTable");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE trafficTable (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE trafficTable");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileTrafficJson + "' INTO TABLE trafficTable");
             value = HiveQueryExecutor.executeQuery("");
             String[] tokens = value.split("<br/>");
             float num = 0;
@@ -36,7 +37,7 @@ public class TrafficSensorHandler {
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS trafficTable");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE trafficTable (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/hadoop/uploads/JSON/file_seismic.json' INTO TABLE trafficTable");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileTrafficJson + "' INTO TABLE trafficTable");
             value = HiveQueryExecutor.executeQuery("");
             String[] tokens = value.split("<br/>");
             float num = 0;

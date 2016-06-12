@@ -60,7 +60,7 @@ Welcome <%=session.getAttribute("userid")%>
                         }
 
                         if("1".equals(sensorAction)){
-//                            output = IoT.SeismicSensorHandler.findMostActiveRegions();
+                            output = IoT.SeismicSensorHandler.findMostActiveRegions();
                             out.println(" <div id=\"myDiv\"></div>");
                             out.println("<script src=\"../html/js/graphPlotHelper.js\"></script>");
                         }
@@ -102,46 +102,41 @@ Welcome <%=session.getAttribute("userid")%>
                         }
 
                         if("2".equals(sensorAction)){
-                            output = IoT.AirPollutionHandler.findTopCitiesWithHighestPollutants();
+                            output = IoT.AirPollutionHandler.findCityWithMaximumAmountOfAllPollutants();
                             out.println("Return value : " + returnValue);
                             out.println(output);
                         }
 
                         if("3".equals(sensorAction)){
-                            output = IoT.AirPollutionHandler.findPollutantEmittedInMaximumNumberOfCities();
+                            output = IoT.AirPollutionHandler.findPollutantEmittedMostInAllCitiesCombined();
                             out.println(output);
                         }
                     }else if("humidity".equals(sensor)) {
+
+                        if("0".equals(sensorAction)){
+                            output = HumiditySensorHandler.findNumberOfHighPriorityClassEvents();
+                            out.println(output);
+                        }
 
                         if("1".equals(sensorAction)){
                             output = HumiditySensorHandler.findOverallEventRate();
                             out.println(output);
                         }
 
-                        if("2".equals(sensorAction)){
-                            output = HumiditySensorHandler.findFrequencyOfSprinkleronEvent();
-                            out.println(output);
-                        }
-
-                        if("3".equals(sensorAction)){
-                            output = HumiditySensorHandler.findNumberOfHighPriorityClassEvents();
-                            out.println(output);
-                        }
                     }else if("traffic".equals(sensor)) {
+
                         if ("0".equals(sensorAction)) {
-                            returnValue = TrafficSensorHandler.findMostCongestedCities();
-                            if (returnValue < 0) {
-                                out.println("Error in generating graph as the data file could not be generated");
-                            }
+                            output = TrafficSensorHandler.findMostCongestedCities();
+                            out.println(output);
                         }
 
                         if("1".equals(sensorAction)){
-                            output = TrafficSensorHandler.findCongestionLevelInEachHourInACity();
+                            output = TrafficSensorHandler.findCongestionSpreadInDayAcrossCities();
                             out.println(output);
                         }
 
                         if("2 ".equals(sensorAction)){
-                            output = TrafficSensorHandler.findPeakCongestionTime();
+                            output = TrafficSensorHandler.findAccidentSpreadInDayAcrossCities();
                             out.println(output);
                         }
 

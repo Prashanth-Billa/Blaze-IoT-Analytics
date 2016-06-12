@@ -65,7 +65,7 @@ Welcome <%=session.getAttribute("userid")%>
                         <option value="traffic">Traffic Management Sensor</option>
                         <option value="seismic">Seismic Sensor</option>
                         <option value="humidity">Humidity Sensor</option>
-                        <option value="fall-detection">Fall Detection</option>
+                        <!--<option value="fall-detection">Fall Detection</option>-->
                     </select>
                 </div>
                 <br/>

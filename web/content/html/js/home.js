@@ -42,17 +42,17 @@ function showSensorActions(){
 
     }else if("humidity" == value){
 
-        var actions = ["How many high priority class events are happening", "How many events with priority value = 10 are happening", "How frequently sprinkleron events are occuring", "What is the overall event rate of the humidity system"];
+        var actions = ["How many events with high priority value are happening", "What is the overall event rate of the humidity system"];
         populateSensorActionsList(actions);
 
     }else if("air-pollution" == value){
 
-        var actions = ["Show Air Pollution Levels in 2006 and 2009", "Show the overall levels of pollutants", "Find top cities with highest pollutants", "Find maximum emitted pollutant"];
+        var actions = ["Show Air Pollution Levels in 2006 and 2009", "Show the overall levels of pollutants", "Find city with maximum of all polutants combined", "Find maximum emitted pollutant in all cities combined"];
         populateSensorActionsList(actions);
 
     }else if("traffic" == value){
 
-        var actions = ["Find most congested cities", "Find congestion level in a city", "Find Peak Congestion Time"];
+        var actions = ["Find most congested cities", "Find congestion spread in day", "Find accident spread in day"];
         populateSensorActionsList(actions);
 
     }else if("cross-correlation" == value){

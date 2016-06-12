@@ -129,23 +129,26 @@ public class AirPollutionHandler {
         return value;
     }
 
-    public static String findCityWithMaximumNumberOfPollutants() {
+    public static String findCityWithMaximumAmountOfAllPollutants() {
         String value = "";
         try {
-            String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airPollution");
-            String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airPollution (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileAirPollutionJson + "' INTO TABLE airQualityTable");
-            value = HiveQueryExecutor.executeQuery("");
+            String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airpollution");
+            String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airpollution (json STRING)");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileAirPollutionJson + "' INTO TABLE airpollution");
+            value = HiveQueryExecutor.executeQuery("SELECT\n" +
+                    "  get_json_object(airpollution.json, \"$.location.city\"),\n" +
+                    "  sum(get_json_object(airpollution.json, \"$.pollutants.value\")) AS c\n" +
+                    "FROM airpollution\n" +
+                    "Group by  get_json_object(airpollution.json, \"$.location.city\")\n" +
+                    "ORDER BY c DESC\n" +
+                    "LIMIT 1");
             String[] tokens = value.split("<br/>");
             float num = 0;
             StringBuilder strbuilder = new StringBuilder();
             for(int i = 0; i < tokens.length; i++){
                 strbuilder.append("<br/>");
                 String[] val = tokens[i].split(" ");
-                for(int j = 0; j < val.length; j++){
-                    strbuilder.append(" ");
-                    strbuilder.append(val[j]);
-                }
+                    strbuilder.append("Most Polluted City (all polutant's value combined)  " + val[0]);
             }
         } catch (SQLException e) {
             return e.getLocalizedMessage();
@@ -153,23 +156,32 @@ public class AirPollutionHandler {
         return value;
     }
 
-    public static String findPollutantEmittedInMaximumNumberOfCities() {
+    public static String findPollutantEmittedMostInAllCitiesCombined() {
         String value = "";
         try {
-            String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airPollution");
-            String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airPollution (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileAirPollutionJson + "' INTO TABLE airQualityTable");
-            value = HiveQueryExecutor.executeQuery("");
+            String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airpollution");
+            String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airpollution (json STRING)");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileAirPollutionJson + "' INTO TABLE airpollution");
+            value = HiveQueryExecutor.executeQuery("SELECT\n" +
+                    "  col_1,\n" +
+                    "  col_2\n" +
+                    "FROM (SELECT\n" +
+                    "  get_json_object(airpollution.json, \"$.pollutants.pol\") AS col_1,\n" +
+                    "  MAX(get_json_object(airpollution.json, \"$.pollutants.value\")) AS col_2\n" +
+                    "FROM airpollution\n" +
+                    "GROUP BY get_json_object(airpollution.json, \"$.pollutants.pol\")\n" +
+                    "ORDER BY col_2 DESC LIMIT 1) AS tbl");
             String[] tokens = value.split("<br/>");
             float num = 0;
             StringBuilder strbuilder = new StringBuilder();
             for(int i = 0; i < tokens.length; i++){
                 strbuilder.append("<br/>");
                 String[] val = tokens[i].split(" ");
-                for(int j = 0; j < val.length; j++){
-                    strbuilder.append(" ");
-                    strbuilder.append(val[j]);
-                }
+                strbuilder.append("Pollutant : ");
+                strbuilder.append(val[0]);
+                strbuilder.append(", Value: ");
+                strbuilder.append(val[1]);
+                strbuilder.append("mg/m^3");
             }
         } catch (SQLException e) {
             return e.getLocalizedMessage();

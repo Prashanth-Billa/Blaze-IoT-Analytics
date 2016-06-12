@@ -157,9 +157,6 @@ Welcome <%=session.getAttribute("userid")%>
                                 out.println("<br/><br/><span style='color:red'>Result not entered into database</span><br/>");
                             }
 
-//                            Process mapReduceLogProcess = Runtime.getRuntime().exec("python /home/hadoop/IdeaProjects/IoT Analytics/web/content/YSmart/translate.py TEMP/test.sql TEMP/s.schema");
-//                            mapReduceLogProcess.waitFor();
-
                         }catch(Exception ex){
                             out.println("<span style='color:red'>Submit a valid query / file" + ex.getLocalizedMessage());
                         }

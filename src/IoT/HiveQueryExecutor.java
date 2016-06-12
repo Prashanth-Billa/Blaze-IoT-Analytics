@@ -17,7 +17,7 @@ public class HiveQueryExecutor {
         Statement stmt = null;
         try{
 //            con = DriverManager.getConnection("jdbc:hive2://localhost:10000/default", "hadoop", "");
-            con = DriverManager.getConnection("jdbc:hive2://blazeIOT.azurehdinsight.net:443/default;ssl=true?hive.server2.transport.mode=http;hive.server2.thrift.http.path=/hive2", "blazeIOT", "January@2016");
+            con = DriverManager.getConnection("jdbc:hive2://blazeEngine.azurehdinsight.net:443/default;ssl=true?hive.server2.transport.mode=http;hive.server2.thrift.http.path=/hive2", "blazeEngine", "January@2016");
             stmt = con.createStatement();
         }catch(SQLException e){
             return "Please check the Connection to HDFS and Hive. Please validate the query." + e.getLocalizedMessage();

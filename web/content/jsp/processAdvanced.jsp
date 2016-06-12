@@ -44,7 +44,7 @@ Welcome <%=session.getAttribute("userid")%>
         <div class="tab">
             <div id="tab-1" class="tab-content">
                 <%
-                    String SFTPHOST = "blazeIOT-ssh.azurehdinsight.net";
+                    String SFTPHOST = "blazeEngine-ssh.azurehdinsight.net";
                     int    SFTPPORT = 22;
                     String SFTPUSER = "srt";
                     String SFTPPASS = "January@2016";

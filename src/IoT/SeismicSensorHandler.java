@@ -19,27 +19,15 @@ public class SeismicSensorHandler {
                     String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS seismic");
                     String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE seismic (json STRING)");
                     String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileSeismicJson + "' INTO TABLE seismic");
-                    String value = HiveQueryExecutor.executeQuery("SELECT\n" +
-                            "  get_json_object(seismic.json, \"$.location.city\"),\n" +
-                            "get_json_object(seismic.json, \"$.location.state\"),\n" +
-                            "get_json_object(seismic.json, \"$.location.lat\"),\n" +
-                            "get_json_object(seismic.json, \"$.location.lon\"),\n" +
-                            "  COUNT(get_json_object(seismic.json, \"$.location.city\"))\n" +
-                            "FROM seismic\n" +
-                            "WHERE get_json_object(seismic.json, \"$.prio_value\") = 3\n" +
-                            "GROUP BY get_json_object(seismic.json, \"$.location.city\"),\n" +
-                            "get_json_object(seismic.json, \"$.location.state\"),\n" +
-                            "get_json_object(seismic.json, \"$.location.lat\"),\n" +
-                            "get_json_object(seismic.json, \"$.location.lon\")\n" +
-                            " ORDER BY col DESC LIMIT 200");
+                    String value = HiveQueryExecutor.executeQuery("SELECT get_json_object(seismic.json, \"$.location.city\"), get_json_object(seismic.json, \"$.location.state\"), get_json_object(seismic.json, \"$.location.lat\"), get_json_object(seismic.json, \"$.location.lon\"), COUNT(get_json_object(seismic.json, \"$.location.city\")) AS col FROM seismic WHERE get_json_object(seismic.json, \"$.prio_value\") = 3 GROUP BY get_json_object(seismic.json, \"$.location.city\"), get_json_object(seismic.json, \"$.location.state\"), get_json_object(seismic.json, \"$.location.lat\"), get_json_object(seismic.json, \"$.location.lon\") ORDER BY col DESC LIMIT 200");
                     String[] tokens = value.split("<br/>");
                     float num = 0;
                     for(int i = 0; i < tokens.length; i++){
                         String[] val = tokens[i].split(" ");
-                        fileWriter.append(val[0] + val[1]);
+                        fileWriter.append(val[0] + "   " + val[1]);
                         fileWriter.append(",");
                         num = Float.parseFloat(val[4]);
-                        num = num * 80000;
+                        num = num * 10000;
                         fileWriter.append(String.valueOf(num));
                         fileWriter.append(",");
                         fileWriter.append(val[2]);
@@ -129,14 +117,15 @@ public class SeismicSensorHandler {
 
     public static String findRegionsWithLargeTremors() {
         String value = "";
+        StringBuilder strbuilder = new StringBuilder();
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS seismicTable");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE seismicTable (json STRING)");
             String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileSeismicJson + "' INTO TABLE seismicTable");
-            value = HiveQueryExecutor.executeQuery("Select * from airpollution");
+            value = HiveQueryExecutor.executeQuery("");
             String[] tokens = value.split("<br/>");
             float num = 0;
-            StringBuilder strbuilder = new StringBuilder();
+
             for(int i = 0; i < tokens.length; i++){
                 strbuilder.append("<br/>");
                 String[] val = tokens[i].split(" ");
@@ -148,7 +137,7 @@ public class SeismicSensorHandler {
         } catch (SQLException e) {
             return e.getLocalizedMessage();
         }
-        return value;
+        return strbuilder.toString();
     }
 
     public static String findRegionsWithLargeDurationForTremors() {
@@ -177,25 +166,23 @@ public class SeismicSensorHandler {
 
     public static String findCrossOverRegionsActiveLargeLongDuration() {
         String value = "";
+        StringBuilder strbuilder = new StringBuilder();
         try {
-            String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS seismicTable");
-            String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE seismicTable (json STRING)");
-            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileSeismicJson + "' INTO TABLE seismicTable");
-            value = HiveQueryExecutor.executeQuery("SELECT get_json_object(seismicTable.json, \"$.location.lat\"), get_json_object(seismicTable.json, \"$.location.lon\"), get_json_object(seismicTable.json, \"$.value\"), get_json_object(seismicTable.json, \"$.location.state\"), get_json_object(seismicTable.json, \"$.location.street\") FROM seismicTable");
+            String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS seismic");
+            String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE seismic (json STRING)");
+            String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileSeismicJson + "' INTO TABLE seismic");
+            value = HiveQueryExecutor.executeQuery("SELECT get_json_object(seismic.json, \"$.location.city\"), get_json_object(seismic.json, \"$.location.state\"), get_json_object(seismic.json, \"$.location.lat\"), get_json_object(seismic.json, \"$.location.lon\"), COUNT(get_json_object(seismic.json, \"$.location.city\")) AS col FROM seismic WHERE get_json_object(seismic.json, \"$.prio_value\") = 3 AND get_json_object(seismic.json, \"$.duration.duration\") >= 7 GROUP BY get_json_object(seismic.json, \"$.location.city\"), get_json_object(seismic.json, \"$.location.state\"), get_json_object(seismic.json, \"$.location.lat\"), get_json_object(seismic.json, \"$.location.lon\") ORDER BY col DESC LIMIT 20");
             String[] tokens = value.split("<br/>");
             float num = 0;
-            StringBuilder strbuilder = new StringBuilder();
+
             for(int i = 0; i < tokens.length; i++){
                 strbuilder.append("<br/>");
                 String[] val = tokens[i].split(" ");
-                for(int j = 0; j < val.length; j++){
-                    strbuilder.append(" ");
-                    strbuilder.append(val[j]);
-                }
+                strbuilder.append("<b>" + val[0] + ", " + val[1] + "</b>");
             }
         } catch (SQLException e) {
             return e.getLocalizedMessage();
         }
-        return value;
+        return strbuilder.toString();
     }
 }

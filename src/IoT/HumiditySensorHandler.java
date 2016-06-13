@@ -33,14 +33,13 @@ public class HumiditySensorHandler {
                 float num = 0;
                 StringBuilder strbuilder = new StringBuilder();
                 for (int i = 0; i < tokens.length; i++) {
-                    strbuilder.append("<br/>");
                     String[] val = tokens[i].split(" ");
-                    for (int j = 0; j < val.length; j++) {
-                        fileWriter.append("2003-" + val[0]);
-                        fileWriter.append(",");
-                        fileWriter.append(val[1]);
-                        fileWriter.append("\n");
-                    }
+                    fileWriter.append("2003-" + val[0]);
+                    fileWriter.append(",");
+                    num = Float.parseFloat(val[1]);
+                    num = num/100;
+                    fileWriter.append(String.valueOf(num));
+                    fileWriter.append("\n");
                 }
             } catch (SQLException e) {
                 failed = true;

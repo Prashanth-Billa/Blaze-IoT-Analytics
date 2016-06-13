@@ -22,7 +22,7 @@ if("seismic" == sensorType){
                 color = [,"rgb(255,65,54)","rgb(133,20,75)","rgb(255,133,27)","lightgrey"],
                 citySize = [],
                 hoverText = [],
-                scale = 7000000;
+                scale = 7000;
 
             for ( var i = 0 ; i < intensity.length; i++) {
                 var currentSize = intensity[i] / scale;
@@ -74,7 +74,7 @@ if("seismic" == sensorType){
         });
     }
 }else if("humidity" == sensorType){
-    if(sensorAction == "0"){
+    if(sensorAction == "1"){
         var margin = {top: 20, right: 20, bottom: 70, left: 40},
             width = 600 - margin.left - margin.right,
             height = 300 - margin.top - margin.bottom;
@@ -269,7 +269,7 @@ if("seismic" == sensorType){
             .range([height, 0]);
 
         var color = d3.scale.ordinal()
-            .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+            .range(["#2C3539", "#3090C7", "#6CBB3C", "#F62217", "#B041FF", "#d0743c", "#ff8c00"]);
 
         var xAxis = d3.svg.axis()
             .scale(x0)
@@ -312,7 +312,7 @@ if("seismic" == sensorType){
                 .attr("y", 6)
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
-                .text("Population");
+                .text("Pollutant and Traffic Levels");
 
             var state = svg.selectAll(".state")
                 .data(data)

@@ -6,6 +6,7 @@ public class TrafficSensorHandler {
     private static String fileTrafficJson = "/home/srt/JSON/file_traffic.json";
     public static String findMostCongestedCities() {
         String value = "";
+        StringBuilder strbuilder = new StringBuilder();
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS traffic");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE traffic (json STRING)");
@@ -20,23 +21,22 @@ public class TrafficSensorHandler {
                     "LIMIT 10");
             String[] tokens = value.split("<br/>");
             float num = 0;
-            StringBuilder strbuilder = new StringBuilder();
+
             for(int i = 0; i < tokens.length; i++){
                 strbuilder.append("<br/>");
                 String[] val = tokens[i].split(" ");
-                for(int j = 0; j < val.length; j++){
-                    strbuilder.append(" ");
-                    strbuilder.append(val[j]);
-                }
+                strbuilder.append(i+1 + ")<b>" );
+                strbuilder.append(val[0] + "</b>, Total Congestion Level: <b>" + val[1] + "</b>");
             }
         } catch (SQLException e) {
             return e.getLocalizedMessage();
         }
-        return value;
+        return strbuilder.toString();
     }
 
     public static String findCongestionSpreadInDayAcrossCities() {
         String value = "";
+        StringBuilder strbuilder = new StringBuilder();
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS traffic");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE traffic (json STRING)");
@@ -47,24 +47,33 @@ public class TrafficSensorHandler {
                     "GROUP BY hour(get_json_object(traffic.json, \"$.time\"))\n" +
                     "ORDER BY c");
             String[] tokens = value.split("<br/>");
-            float num = 0;
-            StringBuilder strbuilder = new StringBuilder();
+
             strbuilder.append("<br/>");
             strbuilder.append("Hour (Sorted by highest to least)");
             strbuilder.append("<br/>");
+            int num = 0;
+
             for(int i = 0; i < tokens.length; i++){
                 strbuilder.append("<br/>");
                 String[] val = tokens[i].split(" ");
-                strbuilder.append(val[1]);
+                num = Integer.parseInt(val[1]);
+                if(num > 12){
+                    num = num - 12;
+                    strbuilder.append("Hour : <b>" + String.valueOf(num) + "PM</b>");
+                }else{
+                    strbuilder.append("Hour : <b>" + String.valueOf(num) + "AM</b>");
+                }
+
             }
         } catch (SQLException e) {
             return e.getLocalizedMessage();
         }
-        return value;
+        return strbuilder.toString();
     }
 
     public static String findAccidentSpreadInDayAcrossCities() {
         String value = "";
+        StringBuilder strbuilder = new StringBuilder();
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS traffic");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE traffic (json STRING)");
@@ -75,20 +84,28 @@ public class TrafficSensorHandler {
                     "GROUP BY hour(get_json_object(traffic.json, \"$.time\"))\n" +
                     "ORDER BY c");
             String[] tokens = value.split("<br/>");
-            float num = 0;
-            StringBuilder strbuilder = new StringBuilder();
+
             strbuilder.append("<br/>");
             strbuilder.append("Hour (Sorted by highest to least)");
             strbuilder.append("<br/>");
+            int num = 0;
+
             for(int i = 0; i < tokens.length; i++){
                 strbuilder.append("<br/>");
                 String[] val = tokens[i].split(" ");
-                strbuilder.append(val[1]);
+                num = Integer.parseInt(val[1]);
+                if(num > 12){
+                    num = num - 12;
+                    strbuilder.append("Hour : <b>" + String.valueOf(num) + "PM</b>");
+                }else{
+                    strbuilder.append("Hour : <b>" + String.valueOf(num) + "AM</b>");
+                }
+
             }
         } catch (SQLException e) {
             return e.getLocalizedMessage();
         }
-        return value;
+        return strbuilder.toString();
     }
 
     public static String findPeakCongestionTime() {

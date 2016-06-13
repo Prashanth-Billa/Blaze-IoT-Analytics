@@ -62,20 +62,22 @@ Welcome <%=session.getAttribute("userid")%>
                         if("1".equals(sensorAction)){
                             output = IoT.SeismicSensorHandler.findMostActiveRegions();
                             out.println(" <div id=\"myDiv\"></div>");
+//                            out.println("<script>location.reload(true);</script>");
                             out.println("<script src=\"../html/js/graphPlotHelper.js\"></script>");
                         }
+//
+//                        if("2".equals(sensorAction)){
+//                            output = IoT.SeismicSensorHandler.findRegionsWithLargeTremors();
+//                            out.println(output);
+//                        }
+//
+//                        if("3".equals(sensorAction)){
+//                            output = IoT.SeismicSensorHandler.findRegionsWithLargeDurationForTremors();
+//                            out.println(output);
+//                        }
 
                         if("2".equals(sensorAction)){
-                            output = IoT.SeismicSensorHandler.findRegionsWithLargeTremors();
-                            out.println(output);
-                        }
-
-                        if("3".equals(sensorAction)){
-                            output = IoT.SeismicSensorHandler.findRegionsWithLargeDurationForTremors();
-                            out.println(output);
-                        }
-
-                        if("4".equals(sensorAction)){
+                            out.println("<h2>Top 20 cities with seismic activities (high frequency, high value and large duration) - in USA</h2><br/><br/>");
                             output = IoT.SeismicSensorHandler.findCrossOverRegionsActiveLargeLongDuration();
                             out.println(output);
                         }
@@ -88,6 +90,7 @@ Welcome <%=session.getAttribute("userid")%>
                             if (returnValue < 0) {
                                 out.println("Error in generating graph as the data file could not be generated");
                             }
+                            out.println("<h2>Level of Pollutants in  2006- in USA</h2><br/><br/>");
                             out.println("<script src=\"../html/js/graphPlotHelper.js\"></script>");
                         }
 
@@ -103,7 +106,6 @@ Welcome <%=session.getAttribute("userid")%>
 
                         if("2".equals(sensorAction)){
                             output = IoT.AirPollutionHandler.findCityWithMaximumAmountOfAllPollutants();
-                            out.println("Return value : " + returnValue);
                             out.println(output);
                         }
 
@@ -120,7 +122,9 @@ Welcome <%=session.getAttribute("userid")%>
 
                         if("1".equals(sensorAction)){
                             output = HumiditySensorHandler.findOverallEventRate();
-                            out.println(output);
+                            out.println("<script src=\"../html/js/graphPlotHelper.js\"></script>");
+
+//                            out.println("</br/><br/><br/>" + output);
                         }
 
                     }else if("traffic".equals(sensor)) {
@@ -132,42 +136,46 @@ Welcome <%=session.getAttribute("userid")%>
 
                         if("1".equals(sensorAction)){
                             output = TrafficSensorHandler.findCongestionSpreadInDayAcrossCities();
+                            out.println("<h2>Total Congestion Spread in day - in USA</h2><br/><br/>");
                             out.println(output);
                         }
 
-                        if("2 ".equals(sensorAction)){
+                        if("2".equals(sensorAction)){
                             output = TrafficSensorHandler.findAccidentSpreadInDayAcrossCities();
+                            out.println("<h2>Total Accident Spread in day - in USA</h2><br/><br/>");
                             out.println(output);
                         }
 
                     }else if("cross-correlation".equals(sensor)) {
                         if ("0".equals(sensorAction)) {
-                            returnValue = CrossCorrelation.findAirQualityWithTrafficInEachHour();
+                            returnValue = CrossCorrelation.generateGraph();
                             if (returnValue < 0) {
                                 out.println("Error in generating graph as the data file could not be generated");
                             }
+                            out.println("<h2>Multi Bar Chart for Pollution levels of each pollutant and corresponding traffic congestion in each state - in USA</h2><br/><br/>");
                             out.println("<script src=\"../html/js/graphPlotHelper.js\"></script>");
                         }
 
+//                        if("2".equals(sensorAction)){
+//                            output = CrossCorrelation.findCitiesWithMaximumTrafficAndAirPollutantsEmitted();
+//                            out.println(output);
+//                        }
+//
+//                        if("2".equals(sensorAction)){
+//                            output = CrossCorrelation.findCitiesWithMaximumTrafficAndRelatePolutionHumidity();
+//                            out.println(output);
+//                        }
+
                         if("1".equals(sensorAction)){
-                            output = CrossCorrelation.findCitiesWithMaximumTrafficAndAirPollutantsEmitted();
-                            out.println(output);
-                        }
-
-                        if("2".equals(sensorAction)){
-                            output = CrossCorrelation.findCitiesWithMaximumTrafficAndRelatePolutionHumidity();
-                            out.println(output);
-                        }
-
-                        if("3".equals(sensorAction)){
+                            out.println("<h2>Most Active and large duration cities on seismic scale and also most congested cities - in USA</h2><br/><br/>");
                             output = CrossCorrelation.findMostCongestedCitiesAndRelateWithSeismicScale();
                             out.println(output);
                         }
-
-                        if("4".equals(sensorAction)){
-                            output = CrossCorrelation.findPollutantEmittedInMaximumNumberOfCities();
-                            out.println(output);
-                        }
+//
+//                        if("4".equals(sensorAction)){
+//                            output = CrossCorrelation.findPollutantEmittedInMaximumNumberOfCities();
+//                            out.println(output);
+//                        }
 
 
                     }else if("fall-detection".equals(sensor)){

@@ -26,6 +26,7 @@ public class HiveQueryExecutor {
         }
 
         ResultSet res = null;
+        String r = "";
         ResultSetMetaData resMeta = null;
         if(query.contains("DROP TABLE") || query.contains("CREATE TABLE") || query.contains("LOAD DATA")){
             stmt.executeUpdate(query);
@@ -39,7 +40,9 @@ public class HiveQueryExecutor {
                 for (int i = 1; i <= resMeta.getColumnCount(); i++) {
                     int type = resMeta.getColumnType(i);
                     if (type == Types.VARCHAR || type == Types.CHAR) {
-                        str.append(res.getString(i));
+                        r = res.getString(i);
+                        r = r.replaceAll(" ", "_");
+                        str.append(r);
                         str.append(" ");
                     } else {
                         str.append(String.valueOf(res.getLong(i)));

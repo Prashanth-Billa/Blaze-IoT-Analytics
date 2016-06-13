@@ -7,7 +7,6 @@ import java.sql.SQLException;
 public class AirPollutionHandler {
 
     private static String fileAirPollutionJson = "/home/srt/JSON/file_airPollution.json";
-
     public static int findPollutantsLevelInSpecificDuration(){
         boolean failed = false;
         FileWriter fileWriter = null;
@@ -16,20 +15,27 @@ public class AirPollutionHandler {
                 fileWriter.append("date,value");
                 fileWriter.append("\n");
                 try {
-                    String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airQualityTable");
-                    String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airQualityTable (json STRING)");
-                    String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileAirPollutionJson + "' INTO TABLE airQualityTable");
-                    String value = HiveQueryExecutor.executeQuery("SELECT get_json_object(airQualityTable.json, \"$.pollutants.value\"), get_json_object(airQualityTable.json, \"$.date\") FROM airQualityTable");
+                    String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airpollution");
+                    String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airpollution (json STRING)");
+                    String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileAirPollutionJson + "' INTO TABLE airpollution");
+                    String value = HiveQueryExecutor.executeQuery("SELECT\n" +
+                            "  MONTH(get_json_object(airpollution.json, \"$.date\")),\n" +
+                            "  SUM(get_json_object(airpollution.json, \"$.pollutants.value\"))\n" +
+                            "FROM airpollution\n" +
+                            "WHERE YEAR(get_json_object(airpollution.json, \"$.date\")) = 2006\n" +
+                            "GROUP BY MONTH(get_json_object(airpollution.json, \"$.date\"))");
                     String[] tokens = value.split("<br/>");
-                    for(int i = 0; i < tokens.length; i++){
+                    float num = 0;
+                    StringBuilder strbuilder = new StringBuilder();
+                    for (int i = 0; i < tokens.length; i++) {
+                        strbuilder.append("<br/>");
                         String[] val = tokens[i].split(" ");
-                        String[] t = val[1].split("-");
-                        if("2006".equals(t[0]) || "2009".equals(t[0])){
-                            fileWriter.append(t[0] + "-" + t[1]);
-                            fileWriter.append(",");
-                            fileWriter.append(val[0]);
-                            fileWriter.append("\n");
-                        }
+                        fileWriter.append("2006-" + val[0]);
+                        fileWriter.append(",");
+                        num = Float.parseFloat(val[1]);
+                        num = num;
+                        fileWriter.append(String.valueOf(num));
+                        fileWriter.append("\n");
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -131,6 +137,7 @@ public class AirPollutionHandler {
 
     public static String findCityWithMaximumAmountOfAllPollutants() {
         String value = "";
+        StringBuilder strbuilder = new StringBuilder();
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airpollution");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airpollution (json STRING)");
@@ -144,20 +151,21 @@ public class AirPollutionHandler {
                     "LIMIT 1");
             String[] tokens = value.split("<br/>");
             float num = 0;
-            StringBuilder strbuilder = new StringBuilder();
+
             for(int i = 0; i < tokens.length; i++){
                 strbuilder.append("<br/>");
                 String[] val = tokens[i].split(" ");
-                    strbuilder.append("Most Polluted City (all polutant's value combined)  " + val[0]);
+                strbuilder.append("Most Polluted City (all polutant's value combined) : <b> " + val[0] + " </b>");
             }
         } catch (SQLException e) {
             return e.getLocalizedMessage();
         }
-        return value;
+        return strbuilder.toString();
     }
 
     public static String findPollutantEmittedMostInAllCitiesCombined() {
         String value = "";
+        StringBuilder strbuilder = new StringBuilder();
         try {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS airpollution");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE airpollution (json STRING)");
@@ -173,19 +181,19 @@ public class AirPollutionHandler {
                     "ORDER BY col_2 DESC LIMIT 1) AS tbl");
             String[] tokens = value.split("<br/>");
             float num = 0;
-            StringBuilder strbuilder = new StringBuilder();
+
             for(int i = 0; i < tokens.length; i++){
                 strbuilder.append("<br/>");
                 String[] val = tokens[i].split(" ");
-                strbuilder.append("Pollutant : ");
+                strbuilder.append("Pollutant : <b>");
                 strbuilder.append(val[0]);
-                strbuilder.append(", Value: ");
+                strbuilder.append("</b>, Value: <b>");
                 strbuilder.append(val[1]);
-                strbuilder.append("mg/m^3");
+                strbuilder.append("mg/m^3 </b>");
             }
         } catch (SQLException e) {
             return e.getLocalizedMessage();
         }
-        return value;
+        return strbuilder.toString();
     }
 }

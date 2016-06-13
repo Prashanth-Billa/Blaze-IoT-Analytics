@@ -16,6 +16,7 @@
             <img src="../html/images/logo.png" width="190px"/><br/>
             <h1 style="font-family: Quicksand;">Blaze - An IoT Analytics framework</h1><br/><h2 style="font-family: Quicksand;">Using Hadoop, Hive and HBase</h2><br/>
             <h3 style="font-family: Quicksand;">~ Under Prof. Nalini Venkatasubramanian</h3><br/>
+            <img src="../html/images/ucilogo.png" width="100px" style="opacity: 0.7"/><br/>
         </div>
         <div align="center" style="border: solid 2px grey; width: 500px; color: white; font-family: Quicksand; background: #E5E4E2; color: black; font-weight: bold">
 
@@ -42,6 +43,8 @@
             </tbody>
         </table>
         </div>
+
+
     </center>
 </form>
 </body>

@@ -3,6 +3,7 @@ package IoT;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashSet;
 
 public class SeismicSensorHandler {
 
@@ -64,6 +65,8 @@ public class SeismicSensorHandler {
         boolean failed = false;
         FileWriter fileWriter = null;
         String value = "";
+        HashSet cities = new HashSet();
+        StringBuilder strbuilder = new StringBuilder();
         try {
             fileWriter = new FileWriter("/home/hadoop/IdeaProjects/Blaze-IoT-Analytics/web/content/CSV/seismicIntensity.csv");
             fileWriter.append("name,val,lat,lon");
@@ -78,8 +81,9 @@ public class SeismicSensorHandler {
 
                 for(int i = 0; i < tokens.length; i++){
                     String[] val = tokens[i].split(" ");
-
+                    strbuilder.append("<br/>");
                     fileWriter.append(val[0] + "   " + val[1]);
+                    strbuilder.append("City : <b>" + val[0] + "</b>, State: <b>" + val[1] + "</b>");
                     num = Integer.parseInt(val[4]);
                     fileWriter.append(",");
                     num = num * 10000;
@@ -109,10 +113,10 @@ public class SeismicSensorHandler {
             }
 
             if(failed){
-                return "";
+                return strbuilder.toString();
             }
         }
-        return "";
+        return strbuilder.toString();
     }
 
     public static String findRegionsWithLargeTremors() {

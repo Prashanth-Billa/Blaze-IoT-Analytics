@@ -70,7 +70,7 @@ public class HumiditySensorHandler {
             String ret1 = HiveQueryExecutor.executeQuery("DROP TABLE IF EXISTS humidity");
             String ret2 = HiveQueryExecutor.executeQuery("CREATE TABLE humidity (json STRING)");
             String ret3 = HiveQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '" + fileHumidityJson + "' INTO TABLE humidity");
-            value = HiveQueryExecutor.executeQuery("SELECT get_json_object(humidity.json, \"$.location.city\") as city, get_json_object(humidity.json, \"$.location.state\") as state, count(get_json_object(humidity.json, \"$.event\")) as cnt FROM humidity WHERE get_json_object(humidity.json, \"$.event\")=\"SCALE_low_humidity_RPi\" GROUP BY get_json_object(humidity.json, \"$.location.city\"), get_json_object(humidity.json, \"$.location.state\")");
+            value = HiveQueryExecutor.executeQuery("SELECT get_json_object(humidity.json, \"$.location.city\") as city, get_json_object(humidity.json, \"$.location.state\") as state, count(get_json_object(humidity.json, \"$.event\")) as cnt FROM humidity WHERE get_json_object(humidity.json, \"$.event\")=\"SCALE_low_humidity_RPi\" AND get_json_object(humidity.json, \"$.prio_value\") = 3 GROUP BY get_json_object(humidity.json, \"$.location.city\"), get_json_object(humidity.json, \"$.location.state\") ORDER BY cnt DESC LIMIT 50");
             String[] tokens = value.split("<br/>");
             float num = 0;
             StringBuilder strbuilder = new StringBuilder();

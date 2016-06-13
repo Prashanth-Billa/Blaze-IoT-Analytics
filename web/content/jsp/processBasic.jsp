@@ -55,15 +55,19 @@ Welcome <%=session.getAttribute("userid")%>
                             if(returnValue < 0){
                                 out.println("Error in generating graph as the data file could not be generated");
                             }
+                            out.println("<h2>Regions with very high seismic intensity - in USA</h2><br/><br/>");
                             out.println(" <div id=\"myDiv\"></div>");
                             out.println("<script src=\"../html/js/graphPlotHelper.js\"></script>");
                         }
 
                         if("1".equals(sensorAction)){
                             output = IoT.SeismicSensorHandler.findMostActiveRegions();
+                            out.println("<h2>Most Active or frequent Seismic regions - in USA</h2><br/><br/>");
                             out.println(" <div id=\"myDiv\"></div>");
 //                            out.println("<script>location.reload(true);</script>");
                             out.println("<script src=\"../html/js/graphPlotHelper.js\"></script>");
+                            out.println("<h2>Top 200 Most ACtive cities - in USA</h2><br/><br/>");
+                            out.println(output);
                         }
 //
 //                        if("2".equals(sensorAction)){
@@ -106,22 +110,26 @@ Welcome <%=session.getAttribute("userid")%>
 
                         if("2".equals(sensorAction)){
                             output = IoT.AirPollutionHandler.findCityWithMaximumAmountOfAllPollutants();
+                            out.println("<h2>City with maximum Amount of all pollutants combined - in USA</h2><br/><br/>");
                             out.println(output);
                         }
 
                         if("3".equals(sensorAction)){
                             output = IoT.AirPollutionHandler.findPollutantEmittedMostInAllCitiesCombined();
+                            out.println("<h2>Find maximum emitted pollutant in all cities combined - in USA</h2><br/><br/>");
                             out.println(output);
                         }
                     }else if("humidity".equals(sensor)) {
 
                         if("0".equals(sensorAction)){
                             output = HumiditySensorHandler.findNumberOfHighPriorityClassEvents();
+                            out.println("<h2>Top Cities which are reported with very high humidity frequently - in USA</h2><br/><br/>");
                             out.println(output);
                         }
 
                         if("1".equals(sensorAction)){
                             output = HumiditySensorHandler.findOverallEventRate();
+                            out.println("<h2>Overall Humidity Scenario in 2003 - in USA</h2><br/><br/>");
                             out.println("<script src=\"../html/js/graphPlotHelper.js\"></script>");
 
 //                            out.println("</br/><br/><br/>" + output);
@@ -130,6 +138,7 @@ Welcome <%=session.getAttribute("userid")%>
                     }else if("traffic".equals(sensor)) {
 
                         if ("0".equals(sensorAction)) {
+                            out.println("<h2>Most Congested Cities - in USA</h2><br/><br/>");
                             output = TrafficSensorHandler.findMostCongestedCities();
                             out.println(output);
                         }
@@ -196,6 +205,7 @@ Welcome <%=session.getAttribute("userid")%>
                     }
 
                 %>
+
 
             </div>
             <div id="tab-2" class="tab-content">

@@ -10,8 +10,70 @@ function getUrlVars() {
 var sensorType = getUrlVars()['sensorType'];
 var sensorAction = getUrlVars()['sensor-action-value'];
 if("seismic" == sensorType){
-    if("0" == sensorAction || "1" == sensorAction){
-        Plotly.d3.csv('./../CSV/seismicIntensity.csv', function(err, rows){
+    if("0" == sensorAction){
+        Plotly.d3.csv('./../CSV/seismicIntensity_1.csv', function(err, rows){
+            function unpack(rows, key) {
+                return rows.map(function(row) { return row[key]; });
+            }
+            var cityName = unpack(rows, 'name'),
+                intensity = unpack(rows, 'val'),
+                cityLat = unpack(rows, 'lat'),
+                cityLon = unpack(rows, 'lon'),
+                color = [,"rgb(255,65,54)","rgb(133,20,75)","rgb(255,133,27)","lightgrey"],
+                citySize = [],
+                hoverText = [],
+                scale = 7000;
+
+            for ( var i = 0 ; i < intensity.length; i++) {
+                var currentSize = intensity[i] / scale;
+                var currentText = cityName[i] + "<br>Intensity: " + intensity[i];
+                citySize.push(currentSize);
+                hoverText.push(currentText);
+            }
+
+            var data = [{
+                type: 'scattergeo',
+                locationmode: 'USA-states',
+                lat: cityLat,
+                lon: cityLon,
+                text: hoverText,
+                hoverinfo: 'text',
+                marker: {
+                    size: citySize,
+                    line: {
+                        color: 'black',
+                        width: 2
+                    },
+
+                }
+            }];
+
+            var layout = {
+                title: 'Seismic Sensor Plot',
+                width: 1300,
+                height: 1300,
+                showlegend: false,
+                geo: {
+                    scope: 'usa',
+                    projection: {
+                        type: 'albers usa'
+                    },
+                    showland: true,
+                    landcolor: 'rgb(217, 217, 217)',
+                    subunitwidth: 1,
+                    countrywidth: 1,
+                    showrivers: true,
+                    showlakes: true,
+                    showsubunits: true,
+                    subunitcolor: 'rgb(255,255,255)',
+                    countrycolor: 'rgb(255,255,255)'
+                },
+            };
+
+            Plotly.plot(myDiv, data, layout, {showLink: false});
+        });
+    }else if("1" == sensorAction){
+        Plotly.d3.csv('./../CSV/seismicIntensity_2.csv', function(err, rows){
             function unpack(rows, key) {
                 return rows.map(function(row) { return row[key]; });
             }

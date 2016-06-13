@@ -43,6 +43,8 @@ Welcome <%=session.getAttribute("userid")%>
         </ul>
         <div class="tab">
             <div id="tab-1" class="tab-content">
+                <%@ page import="IoT.HiveAdvancedQueryExecutor" %>
+                <%@ page import="java.sql.*" %>
                 <%
                     String SFTPHOST = "blazeEngine-ssh.azurehdinsight.net";
                     int    SFTPPORT = 22;
@@ -81,6 +83,7 @@ Welcome <%=session.getAttribute("userid")%>
                             {
                                 FileItem fi = (FileItem)i.next();
                                 if ( !fi.isFormField () )  {
+                                    fileThere = true;
 
                                     String fieldName = fi.getFieldName();
                                     fileName = fi.getName();
@@ -101,25 +104,24 @@ Welcome <%=session.getAttribute("userid")%>
                                         channelSftp.cd(SFTPWORKINGDIR);
                                         File f = new File("/home/hadoop/Desktop/" + fileName);
                                         channelSftp.put(new FileInputStream(f), f.getName());
+                                        String hiveTableName = "custom_" + fileName.substring(0, fileName.lastIndexOf('.'));
+                                        String ret1 = IoT.HiveAdvancedQueryExecutor.executeQuery("DROP TABLE IF EXISTS " + hiveTableName);
+                                        String ret2 = IoT.HiveAdvancedQueryExecutor.executeQuery("CREATE TABLE " + hiveTableName + " (json STRING)");
+                                        String ret3 = IoT.HiveAdvancedQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/srt/uploads/" + fileName + "' INTO TABLE " + hiveTableName);
+                                        out.println("<span style='color:green'>Uploaded File into Azure: </span><span style='color:blue'>" + fileName + "</span><br>");
                                     }
                                     catch (Exception e)
                                     {
-                                        out.println("<span style='color:red'>File Not Attached : " + e.getLocalizedMessage() + "</span>");
+                                        out.println("<br/><span style='color:red'>File Not Attached : " + e.getLocalizedMessage() + "</span>");
+                                        fileThere = false;
+
                                     }
-
-                                    out.println("<span style='color:green'>Uploaded File into Azure: </span><span style='color:blue'>" + fileName + "</span><br>");
-
-                                    fileThere = true;
                                 }
                                 if (fi.isFormField()) {
                                     hiveQuery = fi.getString();
                                     break;
                                 }
 
-                            }
-                            if(fileThere == false){
-                                hiveQuery = "";
-                                out.println("<span style='color:red'>File Not Attached</span>");
                             }
                             out.println("</body>");
                             out.println("</html>");
@@ -129,23 +131,20 @@ Welcome <%=session.getAttribute("userid")%>
                     }else{
                         out.println("<html>");
                         out.println("<body>");
-                        out.println("<span style='color:red'>File Not Attached: ");
+                        out.println("<span style='color:red'>File empty ");
                         out.println("</body>");
                         out.println("</html>");
                     }
                 %>
-                <%@ page import="IoT.HiveAdvancedQueryExecutor" %>
-                <%@ page import="java.sql.*" %>
+
                 <%
                     String temp = hiveQuery;
                     if(hiveQuery != "" && hiveQuery != null){
                         hiveQuery = hiveQuery.replaceAll(";", " ");
-                        String ret1 = IoT.HiveAdvancedQueryExecutor.executeQuery("DROP TABLE IF EXISTS customTable");
-                        String ret2 = IoT.HiveAdvancedQueryExecutor.executeQuery("CREATE TABLE customTable (json STRING)");
-                        String ret3 = IoT.HiveAdvancedQueryExecutor.executeQuery("LOAD DATA LOCAL INPATH '/home/srt/uploads/" + fileName + "' INTO TABLE customTable");
+
                         try{
                             String returnedValue = IoT.HiveAdvancedQueryExecutor.executeQuery(hiveQuery);
-                            out.println("<span style='color:green'>Query Successfully submitted: </span><span style='color:blue'>" + temp + "</span><br/>");
+                            out.println("<br/><span style='color:green'>Query Successfully submitted: </span><span style='color:blue'>" + temp + "</span><br/>");
                             out.println("<div align='left'><span style='color:green'><br/><br/>Output: <br/><br/><br/><b>" + returnedValue + "</b></div>");
                             Class.forName("com.mysql.jdbc.Driver");
                             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cs237", "root", "root");
@@ -158,7 +157,7 @@ Welcome <%=session.getAttribute("userid")%>
                             }
 
                         }catch(Exception ex){
-                            out.println("<span style='color:red'>Submit a valid query / file" + ex.getLocalizedMessage());
+                            out.println("<span style='color:red'>Submit a valid query / file: " + ex.getLocalizedMessage());
                         }
                     }else {
                         out.println("<span style='color:red'>Submit a valid query / file");

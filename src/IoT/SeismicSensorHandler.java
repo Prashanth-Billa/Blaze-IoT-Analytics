@@ -13,7 +13,7 @@ public class SeismicSensorHandler {
         boolean failed = false;
         FileWriter fileWriter = null;
             try {
-                fileWriter = new FileWriter("/home/hadoop/IdeaProjects/Blaze-IoT-Analytics/web/content/CSV/seismicIntensity.csv");
+                fileWriter = new FileWriter("/home/hadoop/IdeaProjects/Blaze-IoT-Analytics/web/content/CSV/seismicIntensity_1.csv");
                 fileWriter.append("name,val,lat,lon");
                 fileWriter.append("\n");
                 try {
@@ -68,7 +68,7 @@ public class SeismicSensorHandler {
         HashSet cities = new HashSet();
         StringBuilder strbuilder = new StringBuilder();
         try {
-            fileWriter = new FileWriter("/home/hadoop/IdeaProjects/Blaze-IoT-Analytics/web/content/CSV/seismicIntensity.csv");
+            fileWriter = new FileWriter("/home/hadoop/IdeaProjects/Blaze-IoT-Analytics/web/content/CSV/seismicIntensity_2.csv");
             fileWriter.append("name,val,lat,lon");
             fileWriter.append("\n");
             try {

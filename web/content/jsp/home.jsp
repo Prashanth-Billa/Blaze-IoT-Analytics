@@ -85,13 +85,50 @@ Welcome <%=session.getAttribute("userid")%>
             </form>
         </div>
         <div id="tab-2" class="tab-content">
+            <br/><h3>Files already uploaded: </h3>
+            <%@ page import="com.jcraft.jsch.*" %>
+            <select name="alreadyuploaded">
+            <%
+                String SFTPHOST = "blazeEngine-ssh.azurehdinsight.net";
+                int    SFTPPORT = 22;
+                String SFTPUSER = "srt";
+                String SFTPPASS = "January@2016";
+                String SFTPWORKINGDIR = "/home/srt/uploads/";
+
+                Session     sess     = null;
+                Channel     channel     = null;
+                ChannelSftp channelSftp = null;
+                JSch jsch = new JSch();
+                sess = jsch.getSession(SFTPUSER,SFTPHOST,SFTPPORT);
+                sess.setPassword(SFTPPASS);
+                java.util.Properties conf = new java.util.Properties();
+                conf.put("StrictHostKeyChecking", "no");
+                sess.setConfig(conf);
+                sess.connect();
+                channel = sess.openChannel("sftp");
+                channel.connect();
+                channelSftp = (ChannelSftp)channel;
+                channelSftp.cd(SFTPWORKINGDIR);
+                Vector filelist = channelSftp.ls(SFTPWORKINGDIR);
+                for(int i=0; i<filelist.size();i++){
+                    if(!filelist.get(i).toString().contains("drwxr")){
+                        out.println("<option>" + filelist.get(i) + "</option>");
+                    }
+                }
+            %>
+                </select>
+            <br/><hr/><br/>
             <form method="post" action="processAdvanced.jsp" enctype="multipart/form-data">
                 <img src="../html/images/upload.png" width="80px" style="float: right;"/>
                 <b>Upload Custom file:</b><br/><br/><br>
-                <input type="file" name="file" size="50" /><br/><br/>
+                <input type="file" name="file1" size="500" /><br/><br/>
+                <input type="file" name="file2" size="500" /><br/><br/>
+                <input type="file" name="file3" size="500" /><br/><br/>
+                <input type="file" name="file4" size="500" /><br/><br/>
+                <input type="file" name="file4" size="500" /><br/><br/>
                 <hr/>
                 <p><b>Enter the Hive Query Below: </b></p><br/>
-                <textarea placeholder="The table name would be 'customTable'"  id="query-area" rows="20" cols="20" name="user_query"></textarea>
+                <textarea placeholder="The table name would be 'custom_{FILENAME}'. Example) custom_file_name for file_name.json"  id="query-area" rows="20" cols="20" name="user_query"></textarea>
                 <br/><br/><br/>
                 <input type="submit" class="submit-button"  value="Go!">
             </form>
@@ -130,6 +167,7 @@ Welcome <%=session.getAttribute("userid")%>
             <h2>Hadoop and Hive Environment: </h2>
             <%@ page import="IoT.HiveQueryExecutor" %>
             <%@ page import="java.sql.*" %>
+            <%@ page import="java.util.Vector" %>
             <%
                 try{
                     String returnedValue = IoT.HiveQueryExecutor.executeQuery("show tables");
